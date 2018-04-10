@@ -30,7 +30,6 @@ import {CardIndexService} from './components/card-index.service';
 import {StoredCardsService} from './components/stored-cards.service';
 import { AddComponent } from './components/add/add.component';
 import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
 import { FocusDirective } from './focus.directive';
 import { ListComponent } from './components/list/list.component';
 

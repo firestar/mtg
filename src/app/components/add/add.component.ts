@@ -72,7 +72,6 @@ export class AddComponent implements OnInit {
     self.backspaceCount = 0;
     self.cardCounter++;
     const x = self.cardCounter;
-    const self = this;
     setTimeout(() => {
         if (self.cardCounter === x) {
           if (/([0-9]+)/i.test(self.selectedCardId)) {
