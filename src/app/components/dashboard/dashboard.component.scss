@@ -1,0 +1,24 @@
+.dashboard-container{
+  .header{
+    background: #404538;
+    border-bottom: #767676 solid 1px;
+    h1{
+      padding:10px;
+      padding-bottom:5px;
+      color: #ecffff;
+      letter-spacing: 3px;
+      margin:0px;
+      font-size:20px;
+    }
+    h2{
+      margin:0px;
+      padding:10px;
+      padding-left:15px;
+      letter-spacing: 1px;
+      color: #d7fdff;
+      padding-top:0px;
+      font-size:12px;
+      border-bottom: #000000 solid 1px;
+    }
+  }
+}

@@ -1,0 +1,100 @@
+.add-container{
+  height:100%;
+  .header{
+    background: #404538;
+    border-bottom: #636363 solid 1px;
+    .set-header{
+      border-bottom: #000000 solid 1px;
+    }
+    h3{
+      padding:0px;
+      margin:0px;
+      color: #7d7d7d;
+      font-size:30px;
+      text-align:right;
+      padding-right:10px;
+      padding-top:10px;
+    }
+    .added-counter{
+      border-bottom: #000000 solid 1px;
+    }
+    h1{
+      padding:10px;
+      padding-bottom:5px;
+      color: #ecffff;
+      letter-spacing: 3px;
+      margin:0px;
+      font-size:20px;
+    }
+    h2{
+      margin:0px;
+      padding:10px;
+      padding-left:15px;
+      letter-spacing: 1px;
+      color: #d7fdff;
+      padding-top:0px;
+      font-size:12px;
+    }
+  }
+  .content{
+    padding:10px;
+    height:100%;
+    .mtg-icon{
+      text-align:right;
+    }
+    input{
+      color:#fff;
+    }
+    .center-right-border{
+      border-right:1px solid #4e4e4e;
+      padding-right:30px;
+      padding-left:20px;
+      .mtg-set-header{
+        padding-top:40px;
+        border-bottom:1px solid #313b44;
+        padding-bottom:30px;
+      }
+      .mtg-set-data{
+        padding-top:20px;
+        color:#B7B7B7;
+        font-size:23px;
+        ul{
+          width:100%;
+          list-style: none;
+          padding:0px;
+          margin:0px;
+          li{
+            padding-bottom:10px;
+            hr{
+              border-bottom: #4c4c4c 1px solid;
+              border-top: #626262 1px solid;
+              margin-left:20px;
+              margin-right:10%;
+            }
+          }
+        }
+      }
+      .mtg-icon{
+        color:#fff;
+        margin-top:20px;
+      }
+      h1{
+        color: #e5e5e5;
+      }
+    }
+    .center-left-border{
+      border-left:1px solid #313131;
+      padding-left:30px;
+      padding-right:20px;
+      .mtg-icon{
+        margin-top:20px;
+      }
+      h1{
+        color: #b7b7b7;
+      }
+    }
+    .full-width{
+      width:100%;
+    }
+  }
+}

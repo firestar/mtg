@@ -1,0 +1,54 @@
+<div fxLayout='column' class="add-container">
+  <div fxFlex="62px" fxLayout='row' class="header">
+    <div fxFlex="" class="set-header">
+      <h1>ADD CARDS</h1>
+      <h2>Adding a new card to your collection</h2>
+    </div>
+    <div fxFlex="" class="added-counter">
+      <h3>{{added}} ADDED</h3>
+    </div>
+  </div>
+  <div fxFlex="" fxLayout='row' class="content">
+    <div fxFlex="" fxLayout='column' class="center-right-border">
+      <mat-form-field fxFlex="20px" class="full-width">
+        <input matInput autofocus type="text" [(ngModel)]="selectedSetId" (keyup)="checkSet($event)" [appfocus]="setFocusEmitter"/>
+      </mat-form-field>
+      <div fxFlex="" *ngIf="selectedSet" fxLayout='row' class="mtg-set-header">
+        <div fxFlex="">
+          <h1>{{selectedSet.name}}</h1>
+        </div>
+        <div fxFlex="" class="mtg-icon">
+          <img style="max-width:50px;" src="{{selectedSet.icon_svg_uri}}">
+        </div>
+      </div>
+      <div fxFlex="shrink" *ngIf="selectedSet" fxLayout='row' class="mtg-set-data">
+        <ul>
+          <li>Total Cards: {{selectedSet.card_count}}<hr></li>
+          <li>Type: {{selectedSet.set_type}}<hr></li>
+          <li>Released: {{selectedSet.released_at}}<hr></li>
+        </ul>
+      </div>
+    </div>
+    <div fxFlex="" class="center-left-border">
+      <mat-form-field class="full-width">
+        <input matInput mat-dark-theme type="text" [(ngModel)]="selectedCardId" (keyup)="checkCard($event)" [appfocus]="cardFocusEmitter"/>
+      </mat-form-field>
+      <div *ngIf="selectedCard" fxLayout='row'>
+        <div fxFlex="shrink">
+          <h1>{{selectedCard.name}}</h1><br/>
+          <div style="text-align: center;">
+            <img *ngIf="selectedCard.image_uris" style="height:400px" src="{{selectedCard.image_uris.normal}}">
+            <img *ngIf="selectedCard.card_faces" style="height:400px" src="{{selectedCard.card_faces[0].image_uris.normal}}">
+          </div>
+        </div>
+        <div fxFlex="" class="mtg-icon">
+          <span style="text-align:center;display:inline-block;">
+            <i class="ss ss-{{selectedSetId.toLowerCase()}} ss-{{selectedCard.rarity.toLowerCase()}} ss-4x"></i><br/>
+            <p class="ss-{{selectedCard.rarity.toLowerCase()}}">{{selectedCard.rarity}}</p><br />
+            <i style="color:#fff;">$ {{selectedCard.usd}}</i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -21,7 +21,10 @@ function createWindow() {
   win = new BrowserWindow({
     x: 0,
     y: 0,
+    transparent: true,
+    frame: false,
     width: size.width,
+    titleBarStyle: 'hidden',
     height: size.height
   });
 

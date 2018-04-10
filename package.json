@@ -34,7 +34,14 @@
     "pree2e:protractor": "wait-on http-get://localhost:4200/ && protractor ./protractor.conf.js",
     "e2e": "npm-run-all -p pree2e:build pree2e:protractor"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@angular/animations": "^5.2.9",
+    "@angular/cdk": "^5.2.4",
+    "@angular/flex-layout": "^5.0.0-beta.14",
+    "@angular/material": "^5.2.4",
+    "electron": "1.8.2",
+    "ngx-electron": "^1.0.4"
+  },
   "devDependencies": {
     "@angular/cli": "1.7.1",
     "@angular/common": "5.2.5",
@@ -58,7 +65,6 @@
     "core-js": "2.4.1",
     "cross-env": "5.0.5",
     "dotenv": "5.0.0",
-    "electron": "1.8.2",
     "electron-builder": "20.0.5",
     "electron-reload": "1.2.2",
     "enhanced-resolve": "3.3.0",

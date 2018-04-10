@@ -1,5 +1,26 @@
-<div class="container">
-  <h1 class="title">
-    {{ 'PAGES.HOME.TITLE' | translate }}
-  </h1>
+<div fxLayout='column' class="container">
+    <div fxFlex="25px" class="header" fxLayout='row'>
+        <div fxFlex="">Magic The Gathering Collection Indexing</div>
+        <div fxFlex="75px" class="button-menu">
+            <a (click)="min()"><mat-icon>remove</mat-icon></a>
+            <a (click)="res()" *ngIf="!electronService.remote.getCurrentWindow().isMaximizable()"><mat-icon>filter_none</mat-icon></a>
+            <a (click)="max()" *ngIf="electronService.remote.getCurrentWindow().isMaximizable()"><mat-icon>crop_din</mat-icon></a>
+            <a (click)="close()"><mat-icon>clear</mat-icon> ad</a>
+        </div>
+    </div>
+    <div class="content" fxFlex="" fxLayout='row'>
+        <div fxFlex="70px" class="menu">
+            <button routerLink="/dashboard" mat-mini-fab>
+                <mat-icon>home</mat-icon>
+            </button>
+            <button routerLink="/add" mat-mini-fab>
+                <mat-icon>add</mat-icon>
+            </button>
+            <button routerLink="/list" mat-mini-fab>
+                <mat-icon>format_list_bulleted</mat-icon>
+            </button>
+        </div>
+        <div fxFlex=""><router-outlet></router-outlet></div>
+
+    </div>
 </div>

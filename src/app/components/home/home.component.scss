@@ -1,17 +1,42 @@
 .container {
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: #343434 1px solid;
+  background: #212629;
+  .header{
+    padding-left:10px;
+    -webkit-app-region: drag;
+    padding-top:3px;
+    border-bottom: #424242 1px solid;
+    font-size:16px;
+    color:#fff;
+    font-weight: bold;
+    .button-menu{
+      -webkit-app-region: no-drag;
+      mat-icon{
+        font-size:10px;
+      }
+      .mat-icon:hover{
+        border:1px solid #fff;
+      }
+    }
 
-  background: url(../../../assets/background.jpg) no-repeat center fixed;
-  -webkit-background-size: cover; /* pour anciens Chrome et Safari */
-  background-size: cover; /* version standardisée */
-
-  .title {
-    color: white;
-    margin:0;
-    padding:50px 20px;
   }
+  .content{
+    background: #424953;
+    .menu{
+      background-color:#343434;
+      border-right: #000000 1px solid;
+      text-align:center;
+      button{
+        margin-top:20px;
+        background: #505059;
+        padding:0px;
+        mat-icon{
+          color:#fff;
+          font-size:23px;
+        }
+      }
 
+    }
+  }
 }

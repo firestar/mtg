@@ -1,0 +1,32 @@
+<div fxLayout='column' class="list-container">
+  <div fxFlex="62px" fxLayout='row' class="header">
+    <div fxFlex="" class="set-header">
+      <h1>LIST OF CARDS</h1>
+      <h2>Adding a new card to your collection</h2>
+    </div>
+    <div fxFlex="" class="added-counter">
+      <h3>{{added}} IN COLLECTION</h3>
+    </div>
+  </div>
+  <div fxFlex="" fxLayout='column' class="content">
+    <div fxFlex="46px">
+      <span *ngFor="let pageI of pages;" class="pagination">
+        <a (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
+      </span>
+    </div>
+    <div fxFlex="shrink" style="max-width: 100%;overflow-y: scroll;">
+      <div *ngFor="let card of cards.slice(page * 15, page * 15 + 15);">
+        <span style="float:left;margin:20px;color:#c3d9ff;">
+          <img style="width:180px;" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" /><br/>
+          {{card.set}} / {{card.card}}<br/>
+          {{card.count}} s <span *ngIf="card.foil_count">| {{card.foil_count}} f</span>
+        </span>
+      </div>
+    </div>
+    <div fxFlex="33px">
+      <span *ngFor="let pageI of pages;" class="pagination">
+        <a (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
+      </span>
+    </div>
+  </div>
+</div>
