@@ -14,7 +14,14 @@ export class ListComponent implements OnInit {
   cards = [];
   page = 0;
   pages = [];
+  limit = 15;
   cardSets = {};
+
+
+  width = (wid) => {
+    this.limit = Math.floor(wid / 220) * 3;
+    this.pages = this.createRange(this.cards.length / this.limit);
+  }
 
   setPage(p) {
     this.page = p;
@@ -45,7 +52,7 @@ export class ListComponent implements OnInit {
               });
           }
       });
-      self.pages = self.createRange(self.cards.length / 15);
+      self.pages = self.createRange(self.cards.length / self.limit);
   }
 
 }

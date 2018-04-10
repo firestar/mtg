@@ -39,19 +39,35 @@
   .content{
     padding:10px;
     height:100%;
-    .pagination{
+    img{
+      border-radius:8px;
+    }
+    .paginator-top{
       width:100%;
+      text-align:right;
+      border-bottom:3px solid #212629;
+    }
+    .paginator-bottom{
+      width:100%;
+      text-align:right;
+      border-top:3px solid #212629;
+    }
+    .pagination{
       a{
         padding:7px;
         color:#fff;
         cursor:pointer;
-        padding-left:4px;
-        padding-right:4px;
+        border-radius: 4px;
         margin-right:20px;
         background: #4a4a4a;
         margin-top:2px;
         display:inline-block;
         border:1px solid #2c342a;
+      }
+      a:hover{
+        background: #afd6ff;
+        color:#000000;
+        border:1px solid #ddefff;
       }
       a.active{
         background: #8bb290;
