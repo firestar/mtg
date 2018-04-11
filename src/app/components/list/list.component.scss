@@ -44,15 +44,17 @@
     }
     .paginator-top{
       width:100%;
-      text-align:right;
-      border-bottom:3px solid #212629;
+      border-bottom:3px solid #6e8187;
+      .whiteText .mat-select-content{
+        color:#fff !important;
+      }
     }
     .paginator-bottom{
       width:100%;
-      text-align:right;
-      border-top:3px solid #212629;
+      border-top:3px solid #6e8187;
     }
     .pagination{
+      text-align:right;
       a{
         padding:7px;
         color:#fff;
@@ -69,8 +71,9 @@
         color:#000000;
         border:1px solid #ddefff;
       }
-      a.active{
+      a.active, a.active:hover{
         background: #8bb290;
+        color:#fff;
         border:1px solid #3c6536;
       }
     }

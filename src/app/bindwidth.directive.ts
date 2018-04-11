@@ -3,7 +3,7 @@ import {Directive, Input, OnInit, ElementRef, HostListener, AfterViewInit} from 
 @Directive({
   selector: '[appBindWidth]'
 })
-export class BindwidthDirective implements AfterViewInit {
+export class BindwidthDirective implements AfterViewInit, OnInit {
   @Input("widthFunc") widthFunc;
   constructor(private elementRef: ElementRef) {
 
@@ -14,6 +14,9 @@ export class BindwidthDirective implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.calcWidth();
+  }
+  ngOnInit() {
     this.calcWidth();
   }
 

@@ -33,6 +33,7 @@ import {MatInputModule} from '@angular/material/input';
 import { FocusDirective } from './focus.directive';
 import { ListComponent } from './components/list/list.component';
 import { BindwidthDirective } from './bindwidth.directive';
+import {MatSelectModule} from '@angular/material/select';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -53,6 +54,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    MatSelectModule,
     MatGridListModule,
     MatInputModule,
     FlexLayoutModule,

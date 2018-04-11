@@ -2,32 +2,46 @@
   <div fxFlex="62px" fxLayout='row' class="header">
     <div fxFlex="" class="set-header">
       <h1>LIST OF CARDS</h1>
-      <h2>Adding a new card to your collection</h2>
+      <h2>Cards in your collection</h2>
     </div>
     <div fxFlex="" class="added-counter">
-      <h3>{{added}} IN COLLECTION</h3>
+      <h3>{{count}} IN COLLECTION</h3>
     </div>
   </div>
-  {{t}}
   <div fxFlex="" fxLayout='column' class="content">
-    <div fxFlex="46px" class="paginator-top">
-      <span *ngFor="let pageI of pages;" class="pagination">
-        <a (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
-      </span>
-    </div>
-    <div fxFlex="shrink" style="max-width: 100%;overflow-y: scroll;" appBindWidth [widthFunc]="width">
-      <div *ngFor="let card of cards.slice(page * limit, page * limit + limit);">
-        <span style="float:left;margin:20px;color:#c3d9ff;">
-          <img style="width:180px;" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" /><br/>
-          {{card.set}} / {{card.card}}<br/>
-          {{card.count}} s <span *ngIf="card.foil_count">| {{card.foil_count}} f</span>
-        </span>
+    <div fxLayout='row' fxFlex="46px" class="paginator-top">
+      <div fxFlex="46%">
+        <mat-form-field>
+          <mat-select class="whiteText" placeholder="Selected Set" [(value)]="selectedSet" (change)="recalculateList()">
+            <mat-option value="*">All</mat-option>
+            <mat-option *ngFor="let set of sets" [value]="set">
+              {{ set }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div fxFlex="8%" style="text-align: center;">
+        <i *ngIf="selectedSet !== '*'" style="font-size:40px;" class="ss ss-{{selectedSet}} ss-mythic ss-grad ss-3x"></i>
+        <i *ngIf="selectedSet === '*'" style="font-size:40px;" class="ss ss-mythic ss-grad ss-3x"></i>
+      </div>
+      <div fxFlex="46%" class="pagination">
+        <a *ngFor="let pageI of pages;" (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
       </div>
     </div>
-    <div fxFlex="33px" class="paginator-bottom">
-      <span *ngFor="let pageI of pages;" class="pagination">
-        <a (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
+    <div fxFlex="shrink" appBindWidth [widthFunc]="width" style="max-width:100%;overflow-y:scroll;">
+      <span  *ngFor="let card of cards.slice(page * limit, page * limit + limit);" style="float:left;margin:20px;color:#c3d9ff;">
+        <img style="width:180px;" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" /><br/>
+        {{card.set}} / {{card.card}}<br/>
+        {{card.count}} s <span *ngIf="card.foil_count">| {{card.foil_count}} f</span>
       </span>
+    </div>
+    <div fxFlex="33px" fxLayout='row' class="paginator-bottom">
+      <div fxFlex="50%">
+        <h3 style="color:#fff;padding:0px;margin:9px;">{{setInfo.name}}</h3>
+      </div>
+      <div  fxFlex="50%" class="pagination">
+        <a *ngFor="let pageI of pages;" (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
+      </div>
     </div>
   </div>
 </div>
