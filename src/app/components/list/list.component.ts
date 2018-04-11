@@ -46,6 +46,7 @@ export class ListComponent implements OnInit, AfterViewInit  {
   recalculateList() {
       this.cards = [];
       this.cardSets = {};
+      this.page = 0;
       this.count = 0;
       const self = this;
       let sets = [];
