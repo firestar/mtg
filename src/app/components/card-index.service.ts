@@ -17,15 +17,25 @@ export class CardIndexService {
   }
   public async findCard(set, id, func) {
     this.getScryFall(set, id).subscribe(data => {
-      console.log(data);
       func(data);
     }, error => {
       func(null);
     });
   }
+  public async findCardMTGO(id, func) {
+      this.getScryFallMTGO(id).subscribe(data => {
+          func(data);
+      }, error => {
+          func(null);
+      });
+  }
   public getScryFall(set, id) {
       return this.http.get('https://api.scryfall.com/cards/' + set + '/' + id);
   }
+  public getScryFallMTGO(id) {
+      return this.http.get('https://api.scryfall.com/cards/mtgo/' + id);
+  }
+
   public getJSON(set) {
     return this.http.get('https://api.scryfall.com/sets/' + set);
   }

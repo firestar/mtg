@@ -17,10 +17,18 @@ export class DashboardComponent implements OnInit {
         if (set !== 'null') {
             const cards = Object.keys(this.storedCards.cards[set]);
             cards.forEach(card => {
-                self.value += this.storedCards.cards[set][card].count * parseFloat(this.storedCards.cards[set][card].usd);
-                if (this.storedCards.cards[set][card].foil_count) {
-                    self.value += this.storedCards.cards[set][card].foil_count * parseFloat(this.storedCards.cards[set][card].usd);
-                }
+
+                    self.value += this.storedCards.cards[set][card].count * parseFloat(this.storedCards.prices.current[set][card]);
+                    if (this.storedCards.cards[set][card].foil_count) {
+                        try {
+                            self.value += this.storedCards.cards[set][card].foil_count *
+                                parseFloat(this.storedCards.prices.current[set + '_foil'][card]);
+                        } catch (e) {
+                            self.value += this.storedCards.cards[set][card].foil_count *
+                                parseFloat(this.storedCards.prices.current[set][card]);
+                        }
+                    }
+
             });
         }
       });
