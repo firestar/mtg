@@ -14,56 +14,104 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
+  history = [];
+  historyTMP = [];
   setsData = {};
   cards = [];
   singleTableData = new MatTableDataSource(this.single);
   displayedColumns = ['name', 'value', 'set'];
   value = 0.00;
   intervalFunc = null;
+  historyChanged = false;
 
   constructor(private cardService: CardIndexService, private storedCards: StoredCardsService) { }
 
   ngAfterViewInit() {
     this.singleTableData.sort = this.sort;
   }
-
   ngOnInit() {
     const self = this;
-    self.sets = Object.keys(this.storedCards.cards);
+    self.historyTMP = [];
+    self.sets = Object.keys(self.storedCards.cards);
     self.sets.forEach(set => {
       if (set !== 'null') {
         self.cardService.findSet(set, (data) => {
           self.setsData[set] = data;
           const tmp: Element = { name: self.setsData[set].name, set: set, value: 0 };
-          self.cards = Object.keys(this.storedCards.cards[set]);
+          const historyTmp = { name: self.setsData[set].name, series: [] }
+          self.cards = Object.keys(self.storedCards.cards[set]);
           self.cards.forEach(card => {
-            const val = this.storedCards.cards[set][card].count * parseFloat(this.storedCards.prices.current[set][card]);
+            const val = self.storedCards.cards[set][card].count * parseFloat(self.storedCards.prices.current[set][card]);
+            let history = self.storedCards.prices.history[set][card];
+            for (let i = 9; i >= 0; i--) {
+              try {
+                const e = history[history.length - i - 1];
+                if (!historyTmp.series[10 - i - 1]) {
+                  historyTmp.series[10 - i - 1] = { name: String(10 - i), value: 0 };
+                }
+                if (e) {
+                  historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
+                }
+              } catch (ex) {}
+            }
             self.value += val;
             tmp.value += val;
-            if (this.storedCards.cards[set][card].foil_count) {
+            if (self.storedCards.cards[set][card].foil_count) {
               try {
-                const val_foil = this.storedCards.cards[set][card].foil_count *
-                  parseFloat(this.storedCards.prices.current[set + '_foil'][card]);
+                const val_foil = (
+                  self.storedCards.cards[set][card].foil_count *
+                  parseFloat(self.storedCards.prices.current[set + '_foil'][card])
+                );
+                history = self.storedCards.prices.history[set + '_foil'][card];
+                for (let i = 9; i >= 0; i--) {
+                  try {
+                    const e = history[history.length - i - 1];
+                    if (!historyTmp.series[10 - i - 1]) {
+                      historyTmp.series[10 - i - 1] = { name: String(10 - i), value: 0 };
+                    }
+                    if (e) {
+                      historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
+                    }
+                  } catch (ex) {}
+                }
                 self.value += val_foil;
                 tmp.value += val_foil;
               } catch (e) {
-                const val_foil = this.storedCards.cards[set][card].foil_count *
-                  parseFloat(this.storedCards.prices.current[set][card]);
+                const val_foil = self.storedCards.cards[set][card].foil_count *
+                  parseFloat(self.storedCards.prices.current[set][card]);
+                history = self.storedCards.prices.history[set][card];
+                for (let i = 9; i >= 0; i--) {
+                  try {
+                    const e = history[history.length - i - 1];
+                    if (!historyTmp.series[10 - i - 1]) {
+                      historyTmp.series[10 - i - 1] = {name: String(10 - i), value: 0};
+                    }
+                    if (e) {
+                      historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
+                    }
+                  } catch (ex) {}
+                }
                 self.value += val_foil;
                 tmp.value += val_foil;
               }
             }
           });
+          self.historyTMP.push(historyTmp);
+          self.historyChanged = true;
           self.single.push(tmp);
         });
       }
     });
     self.intervalFunc = setInterval(() => {
       self.single = [...self.single];
+      if ( self.historyChanged) {
+        self.historyChanged = false;
+        self.history = [...self.historyTMP];
+      }
       self.single.sort( (a, b) => b.value - a.value );
       self.singleTableData = new MatTableDataSource(self.single);
       self.value = Math.round(self.value * 100) / 100;
-    }, 500);
+    }, 200);
   }
   ngOnDestroy() {
     clearInterval(this.intervalFunc);

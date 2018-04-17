@@ -43,7 +43,18 @@
                     </mat-table>
                 </div>
                 <div fxFlex="" class="column-margin">
-                    Other Stuff
+                  <ngx-charts-line-chart
+                    [scheme]="'forest'"
+                    [results]="history"
+                    [gradient]="false"
+                    [xAxis]="true"
+                    [yAxis]="true"
+                    [legend]="false"
+                    [showXAxisLabel]="true"
+                    [showYAxisLabel]="true"
+                    [xAxisLabel]="'History from past -> present'"
+                    [yAxisLabel]="'Value Of Set'">
+                  </ngx-charts-line-chart>
                 </div>
             </div>
         </div>
