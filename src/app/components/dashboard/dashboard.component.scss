@@ -21,6 +21,12 @@
       border-bottom: #000000 solid 1px;
     }
   }
+  ::ng-deep .ngx-charts {
+    text{
+      fill: #afafaf !important;
+      font-size:14px;
+    }
+  }
   .items{
     div.graph{
       width:100%;
@@ -28,6 +34,18 @@
       .pie-label{
         color:#fff !important;
       }
+    }
+    .mat-table{
+      background: none !important;
+    }
+    .mat-header-cell{
+      color: #adadad !important;
+      font-weight: bold;
+      font-size:14px;
+    }
+    .mat-cell{
+      color: #e1e1e1 !important;
+      font-size:16px;
     }
     .column-margin{
       margin:30px;
