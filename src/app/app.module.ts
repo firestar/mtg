@@ -35,6 +35,9 @@ import { ListComponent } from './components/list/list.component';
 import { BindwidthDirective } from './bindwidth.directive';
 import {MatSelectModule} from '@angular/material/select';
 import { OutputComponent } from './components/output/output.component';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -54,6 +57,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     OutputComponent
   ],
   imports: [
+    NgxChartsModule,
+    MatTableModule,
+    MatPaginatorModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatSelectModule,

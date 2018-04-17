@@ -42,6 +42,19 @@
     img{
       border-radius:8px;
     }
+    .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
+      background: none !important;
+    }
+    .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
+      color: #c19cd8 !important;
+    }
+    .mat-icon-button{
+      width:20px !important;
+      height:20px !important;
+    }
+    .mat-paginator-container{
+      min-height: 30px !important;
+    }
     .paginator-top{
       width:100%;
       border-bottom:3px solid #6e8187;

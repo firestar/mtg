@@ -1,9 +1,51 @@
 <div fxLayout='column' class="dashboard-container">
-  <div fxFlex="shrink" class="header">
-    <h1>DASHBOARD</h1>
-    <h2>Snapshot of your current card database</h2>
-  </div>
-  <div fxFlex="" fxLayout='row'>
-    <span style="color:#fff;">Total Value: ${{value}}</span>
-  </div>
+    <div fxFlex="shrink" class="header">
+        <h1>DASHBOARD</h1>
+        <h2>Snapshot of your current card database</h2>
+    </div>
+    <div fxFlex="" fxLayout='column'>
+        <div fxFlex="">
+            <h2 style="color:#fff;padding-left:20px;">Total Value In Collection: ${{value}}</h2>
+        </div>
+        <div fxFlex="" fxLayout='column' class="items">
+            <div fxFlex="" class="graph">
+                <ngx-charts-pie-chart style="color:#fff;"
+                    [animations]="false"
+                    [results]="single"
+                    [trimLabels]="false"
+                    [legendTitle]="'MTG Sets'"
+                    [scheme]="'forest'"
+                    [legend]="true"
+                    [explodeSlices]="false"
+                    [labels]="true"
+                    [doughnut]="false"
+                    (select)="onSelect($event)"
+                    [gradient]="false">
+                </ngx-charts-pie-chart>
+            </div>
+            <div fxFlex="" fxLayout='row'>
+                <div fxFlex="" class="column-margin">
+                    <mat-table #table [dataSource]="singleTableData" matSort>
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="value">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> {{element.value | currency}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="set">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header> Set </mat-header-cell>
+                            <mat-cell *matCellDef="let element"> <button mat-raised-button color="accent">{{element.set}} </button></mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                    </mat-table>
+                </div>
+                <div fxFlex="" class="column-margin">
+                    Other Stuff
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

@@ -25,8 +25,15 @@
         <i *ngIf="selectedSet === '*'" style="font-size:40px;" class="ss ss-mythic ss-grad ss-3x"></i>
       </div>
       <div fxFlex="46%" class="pagination">
-        <a *ngFor="let pageI of pages;" (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
+        <mat-paginator [length]="cards.length"
+                       [pageSize]="limit"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[limit]"
+                       (page)="page = $event.pageIndex"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </div>
+
     </div>
     <div fxFlex="shrink" appBindWidth [widthFunc]="width" style="max-width:100%;overflow-y:scroll;">
       <span  *ngFor="let card of cards.slice(page * limit, page * limit + limit);" style="float:left;margin:20px;color:#c3d9ff;">
@@ -40,7 +47,13 @@
         <h3 style="color:#fff;padding:0px;margin:9px;">{{setInfo.name}}</h3>
       </div>
       <div  fxFlex="50%" class="pagination">
-        <a *ngFor="let pageI of pages;" (click)="setPage(pageI)" [ngClass]="{'active': pageI === page}">{{pageI + 1}}</a>
+        <mat-paginator style="margin-top:-10px !important;" [length]="cards.length"
+                       [pageSize]="limit"
+                       [pageIndex]="page"
+                       [pageSizeOptions]="[limit]"
+                       (page)="page = $event.pageIndex"
+                       [showFirstLastButtons]="true">
+        </mat-paginator>
       </div>
     </div>
   </div>
