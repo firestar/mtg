@@ -94,10 +94,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const self = this;
-    Observable.interval(20000).subscribe(() => {
+    Observable.interval(60 * 60 * 1000).subscribe(() => {
       console.log('updating card data');
       const s = new Date();
-      s.setDate(s.getDate() -  1  / 24);
+      s.setDate(s.getDate() - 1);
       const cards = self.storedCards.flatList(s, 25);
       if (cards) {
           console.log(cards);
