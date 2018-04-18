@@ -8,6 +8,7 @@ export class CardIndexService {
 
   constructor(private http: HttpClient) {
   }
+  setsCache = {};
   public async findSet(set, func) {
     this.getJSON(set).subscribe(data => {
       setTimeout(() => {
