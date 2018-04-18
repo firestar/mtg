@@ -10,23 +10,35 @@ export class CardIndexService {
   }
   public async findSet(set, func) {
     this.getJSON(set).subscribe(data => {
-      func(data);
+      setTimeout(() => {
+        func(data);
+      }, 100);
     }, error => {
+      setTimeout(() => {
         func(null);
+      }, 100);
     });
   }
   public async findCard(set, id, func) {
     this.getScryFall(set, id).subscribe(data => {
-      func(data);
+      setTimeout(() => {
+        func(data);
+      }, 100);
     }, error => {
-      func(null);
+      setTimeout(() => {
+        func(null);
+      }, 100);
     });
   }
   public async findCardMTGO(id, func) {
       this.getScryFallMTGO(id).subscribe(data => {
+        setTimeout(() => {
           func(data);
+        }, 100);
       }, error => {
+        setTimeout(() => {
           func(null);
+        }, 100);
       });
   }
   public getScryFall(set, id) {
