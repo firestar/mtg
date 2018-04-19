@@ -24,7 +24,7 @@ export class ListComponent implements OnInit, AfterViewInit  {
   width = (wid) => {
     this.limit = Math.floor(wid / 220) * 3;
     this.pages = this.createRange(Math.ceil(this.cards.length / this.limit));
-  };
+  }
 
   setPage(p) {
     this.page = p;
@@ -44,51 +44,56 @@ export class ListComponent implements OnInit, AfterViewInit  {
       this.pages = this.createRange(Math.ceil(this.cards.length / this.limit));
   }
   recalculateList() {
-      this.cards = [];
-      this.cardSets = {};
-      this.page = 0;
-      this.count = 0;
-      const self = this;
-      let sets = [];
-      if (this.selectedSet === '*') {
-          sets = Object.keys(this.storedCards.cards);
-          self.setInfo = {
-              name: 'All Sets'
-          };
+    this.cards = [];
+    this.cardSets = {};
+    this.page = 0;
+    this.count = 0;
+    const self = this;
+    let sets = [];
+    if (this.selectedSet === '*') {
+      sets = Object.keys(this.storedCards.cards);
+      self.setInfo = {
+        name: 'All Sets'
+      };
+    } else {
+      if (!self.cardService.setsCache[self.selectedSet] ) {
+        self.cardService.findSet(self.selectedSet, data => {
+          self.setInfo = data;
+          self.cardService.setsCache[self.selectedSet] = data;
+        });
       } else {
-          this.cardService.findSet(this.selectedSet, data => {
-              self.setInfo = data;
-              console.log(data);
-          });
-          sets = [this.selectedSet];
+        self.setInfo = self.cardService.setsCache[self.selectedSet];
       }
-      sets.forEach(set => {
-          if (set !== 'null') {
-              const cards = Object.keys(this.storedCards.cards[set]);
-              cards.forEach(card => {
-                  if (!this.cardSets[set]) {
-                      this.cardSets[set] = [];
-                      if (this.sets.indexOf(set) === -1) {
-                          this.sets.push(set);
-                      }
-                  }
-                  this.storedCards.cards[set][card].set = set;
-                  this.storedCards.cards[set][card].card = card;
-                  const val = parseFloat(this.storedCards.cards[set][card].usd);
-                  this.count += this.storedCards.cards[set][card].count;
-                  if (this.storedCards.cards[set][card].foil_count) {
-                      this.count += this.storedCards.cards[set][card].foil_count;
-                  }
-                  this.storedCards.cards[set][card].value += this.storedCards.cards[set][card].count * val;
-                  if (this.storedCards.cards[set][card].foil_count) {
-                      this.storedCards.cards[set][card].value += this.storedCards.cards[set][card].foil_count * val;
-                  }
-                  self.cards.push(this.storedCards.cards[set][card]);
-                  this.cardSets[set].push(this.storedCards.cards[set][card]);
-              });
+      sets = [self.selectedSet];
+    }
+    sets.sort();
+    sets.forEach(set => {
+      if (set !== 'null') {
+        const cards = Object.keys(this.storedCards.cards[set]);
+        cards.forEach(card => {
+          if (!this.cardSets[set]) {
+            this.cardSets[set] = [];
+            if (this.sets.indexOf(set) === -1) {
+              this.sets.push(set);
+            }
           }
-      });
-      this.pages = this.createRange(Math.ceil(this.cards.length / this.limit));
+          this.storedCards.cards[set][card].set = set;
+          this.storedCards.cards[set][card].card = card;
+          const val = parseFloat(this.storedCards.cards[set][card].usd);
+          this.count += this.storedCards.cards[set][card].count;
+          if (this.storedCards.cards[set][card].foil_count) {
+            this.count += this.storedCards.cards[set][card].foil_count;
+          }
+          this.storedCards.cards[set][card].value += this.storedCards.cards[set][card].count * val;
+          if (this.storedCards.cards[set][card].foil_count) {
+            this.storedCards.cards[set][card].value += this.storedCards.cards[set][card].foil_count * val;
+          }
+          self.cards.push(this.storedCards.cards[set][card]);
+          this.cardSets[set].push(this.storedCards.cards[set][card]);
+        });
+      }
+    });
+    this.pages = this.createRange(Math.ceil(this.cards.length / this.limit));
   }
   ngOnInit() {
     this.recalculateList();

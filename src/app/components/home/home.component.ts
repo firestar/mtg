@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     const self = this;
-    Observable.interval(60 * 60 * 1000).subscribe(() => {
+    Observable.interval(60 * 1000).subscribe(() => {
       console.log('updating card data');
       const s = new Date();
       s.setDate(s.getDate() - 1);
