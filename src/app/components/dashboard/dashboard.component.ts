@@ -53,7 +53,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
             try {
               const e = history[history.length - i - 1];
               if (!historyTmp.series[10 - i - 1]) {
-                historyTmp.series[10 - i - 1] = { name: String(10 - i), value: 0 };
+                const date = new Date(e[1]);
+                historyTmp.series[10 - i - 1] = { name: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay(), value: 0 };
               }
               if (e) {
                 historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
@@ -73,7 +74,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
                 try {
                   const e = history[history.length - i - 1];
                   if (!historyTmp.series[10 - i - 1]) {
-                    historyTmp.series[10 - i - 1] = { name: String(10 - i), value: 0 };
+                    const date = new Date(e[1]);
+                    historyTmp.series[10 - i - 1] = { name: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay(), value: 0 };
                   }
                   if (e) {
                     historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
@@ -90,7 +92,8 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
                 try {
                   const e = history[history.length - i - 1];
                   if (!historyTmp.series[10 - i - 1]) {
-                    historyTmp.series[10 - i - 1] = {name: String(10 - i), value: 0};
+                    const date = new Date(e[1]);
+                    historyTmp.series[10 - i - 1] = { name: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay(), value: 0 };
                   }
                   if (e) {
                     historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
