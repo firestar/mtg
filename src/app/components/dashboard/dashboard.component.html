@@ -42,19 +42,24 @@
                         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                     </mat-table>
                 </div>
-                <div fxFlex="" class="column-margin">
-                  <ngx-charts-line-chart
-                    [scheme]="'forest'"
+                <div fxFlex="50%" style="height: 400px;" class="column-margin">
+                  <ngx-charts-area-chart-stacked
+                    [scheme]="colorScheme"
                     [results]="history"
                     [gradient]="false"
                     [xAxis]="true"
                     [yAxis]="true"
-                    [legend]="false"
+                    [legend]="true"
                     [showXAxisLabel]="true"
                     [showYAxisLabel]="true"
                     [xAxisLabel]="'History from past -> present'"
                     [yAxisLabel]="'Value Of Set'">
-                  </ngx-charts-line-chart>
+                  </ngx-charts-area-chart-stacked>
+                </div>
+            </div>
+            <div fxFlex="" fxLayout='row'>
+                <div fxFlex="" class="column-margin">
+                    testing
                 </div>
             </div>
         </div>

@@ -38,6 +38,7 @@ import { OutputComponent } from './components/output/output.component';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import { CardComponent } from './components/card/card.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -54,7 +55,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     FocusDirective,
     ListComponent,
     BindwidthDirective,
-    OutputComponent
+    OutputComponent,
+    CardComponent
   ],
   imports: [
     NgxChartsModule,

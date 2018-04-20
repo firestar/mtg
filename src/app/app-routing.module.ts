@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {ListComponent} from './components/list/list.component';
 import {OutputComponent} from './components/output/output.component';
+import {CardComponent} from './components/card/card.component';
 
 const routes: Routes = [
     {
@@ -31,6 +32,11 @@ const routes: Routes = [
                 path: 'output',
                 component: OutputComponent
             }
+          ,
+          {
+            path: 'card/:set/:card',
+            component: CardComponent
+          }
         ]
     }
 ];

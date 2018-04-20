@@ -36,11 +36,11 @@
 
     </div>
     <div fxFlex="shrink" appBindWidth [widthFunc]="width" style="max-width:100%;overflow-y:scroll;">
-      <span  *ngFor="let card of cards.slice(page * limit, page * limit + limit);" style="float:left;margin:20px;color:#c3d9ff;">
+      <a *ngFor="let card of cards.slice(page * limit, page * limit + limit);" [routerLink]="['/card', card.set, card.card]" style="float:left;margin:20px;color:#c3d9ff;">
         <img style="width:180px;" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" /><br/>
         {{card.set}} / {{card.card}}<br/>
         {{card.count}} s <span *ngIf="card.foil_count">| {{card.foil_count}} f</span>
-      </span>
+      </a>
     </div>
     <div fxFlex="33px" fxLayout='row' class="paginator-bottom">
       <div fxFlex="50%">

@@ -23,12 +23,17 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   value = 0.00;
   intervalFunc = null;
   historyChanged = false;
+  days = [];
+  colorScheme = {
+    domain: []
+  }
 
   constructor(private cardService: CardIndexService, private storedCards: StoredCardsService) { }
 
   ngAfterViewInit() {
     this.singleTableData.sort = this.sort;
   }
+
 
   calculateForSet (setNum) {
     const self = this;
@@ -42,70 +47,100 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     if (set !== 'null') {
       const setFunc = (data) => {
+        const obj = {};
+        const totals = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        let totalIndex = 0;
+        const already = [];
         self.setsData[set] = data;
         const tmp: Element = { name: self.setsData[set].name, set: set, value: 0 };
-        const historyTmp = { name: self.setsData[set].name, series: [] }
+        const historyTmp = {
+          name: self.setsData[set].name,
+          series: [],
+          total: 0
+        };
+        for (let j = 9; j >= 0; j--) {
+          const d = new Date();
+          d.setDate(d.getDate() - j);
+          const dayString = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+          self.days.push(dayString);
+          historyTmp.series[9 - j] = { name: dayString, value: 0};
+        }
         self.cards = Object.keys(self.storedCards.cards[set]);
         self.cards.forEach(card => {
-          const val = self.storedCards.cards[set][card].count * parseFloat(self.storedCards.prices.current[set][card]);
+          const count = self.storedCards.cards[set][card].count;
+          const val = count * parseFloat(self.storedCards.prices.current[set][card]);
           let history = self.storedCards.prices.history[set][card];
           for (let i = 9; i >= 0; i--) {
             try {
               const e = history[history.length - i - 1];
-              if (!historyTmp.series[10 - i - 1]) {
-                const date = new Date(e[1]);
-                historyTmp.series[10 - i - 1] = { name: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay(), value: 0 };
+              const date = new Date(e[1]);
+              const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+              const index = self.days.indexOf(dayString);
+              if (!obj[index + '_' + card]) {
+                historyTmp.series[index].value += count * parseFloat(e[0]);
+                totals[index] += count * parseFloat(e[0]);
+                if (index !== totalIndex && totals[totalIndex] < totals[index]) {
+                  totalIndex = index;
+                }
+                obj[index + '_' + card] = true;
               }
-              if (e) {
-                historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
-              }
-            } catch (ex) {}
+            } catch (ex) {
+            }
           }
           self.value += val;
           tmp.value += val;
           if (self.storedCards.cards[set][card].foil_count) {
-            try {
-              const val_foil = (
-                self.storedCards.cards[set][card].foil_count *
-                parseFloat(self.storedCards.prices.current[set + '_foil'][card])
-              );
+            if (self.storedCards.prices.current[set + '_foil'] && self.storedCards.prices.current[set + '_foil'][card]) {
+              const foil_count = self.storedCards.cards[set][card].foil_count;
+              const val_foil = foil_count * parseFloat(self.storedCards.prices.current[set + '_foil'][card]);
               history = self.storedCards.prices.history[set + '_foil'][card];
               for (let i = 9; i >= 0; i--) {
                 try {
                   const e = history[history.length - i - 1];
-                  if (!historyTmp.series[10 - i - 1]) {
-                    const date = new Date(e[1]);
-                    historyTmp.series[10 - i - 1] = { name: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay(), value: 0 };
+                  const date = new Date(e[1]);
+                  const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                  const index = self.days.indexOf(dayString);
+                  if (!obj[index + '_foil_' + card]) {
+                    historyTmp.series[index].value += foil_count * parseFloat(e[0]);
+                    totals[index] += foil_count * parseFloat(e[0]);
+                    if (index !== totalIndex && totals[totalIndex] < totals[index]) {
+                      totalIndex = index;
+                    }
+                    obj[index + '_foil_' + card] = true;
                   }
-                  if (e) {
-                    historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
-                  }
-                } catch (ex) {}
+                } catch (ex) {
+                }
               }
               self.value += val_foil;
               tmp.value += val_foil;
-            } catch (e) {
-              const val_foil = self.storedCards.cards[set][card].foil_count *
-                parseFloat(self.storedCards.prices.current[set][card]);
+            } else {
+              const foil_count = self.storedCards.cards[set][card].foil_count;
+              const val_foil = foil_count * parseFloat(self.storedCards.prices.current[set][card]);
               history = self.storedCards.prices.history[set][card];
               for (let i = 9; i >= 0; i--) {
                 try {
                   const e = history[history.length - i - 1];
-                  if (!historyTmp.series[10 - i - 1]) {
-                    const date = new Date(e[1]);
-                    historyTmp.series[10 - i - 1] = { name: date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay(), value: 0 };
+                  const date = new Date(e[1]);
+                  const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                  const index = self.days.indexOf(dayString);
+                  if (!obj[index + '_' + card]) {
+                    historyTmp.series[index].value += foil_count * parseFloat(e[0]);
+                    totals[index] += foil_count * parseFloat(e[0]);
+                    if (index !== totalIndex && totals[totalIndex] < totals[index]) {
+                      totalIndex = index;
+                    }
+                    obj[index + '_' + card] = true;
                   }
-                  if (e) {
-                    historyTmp.series[10 - i - 1].value += parseFloat(e[0]);
-                  }
-                } catch (ex) {}
+                } catch (ex) {
+                }
               }
               self.value += val_foil;
               tmp.value += val_foil;
             }
           }
         });
-        self.historyTMP.push(historyTmp);
+        historyTmp.total = totals[totalIndex];
+        self.history.push(historyTmp);
         self.historyChanged = true;
         self.single.push(tmp);
         this.calculateForSet( setNum + 1 );
@@ -122,14 +157,28 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   ngOnInit() {
     const self = this;
+
     self.historyTMP = [];
     self.sets = Object.keys(self.storedCards.cards);
+    const len = self.sets.length;
+    const start = [153, 0, 0];
+    const end = [0, 255, 0];
+    const increment = [];
+    increment[0] = (end[0] - start[0]) / len;
+    increment[1] = (end[1] - start[1]) / len;
+    increment[2] = (end[2] - start[2]) / len;
+    for (let i = 0; i < len; i++) {
+      const r = Math.round(start[0] + i * increment[0]), g = Math.round(start[1] + i * increment[1]), b = Math.round(start[2] + i * increment[2]);
+      self.colorScheme.domain.push('rgba(' + r + ', ' + g + ', ' + b + ', 1)');
+    }
+    console.log(self.colorScheme);
     this.calculateForSet( 0 );
     self.intervalFunc = setInterval(() => {
       self.single = [...self.single];
-      if ( self.historyChanged) {
+      if (self.historyChanged) {
+        self.history.sort((a, b) => b.total - a.total);
         self.historyChanged = false;
-        self.history = [...self.historyTMP];
+        self.history = [...self.history];
       }
       self.single.sort( (a, b) => b.value - a.value );
       self.singleTableData = new MatTableDataSource(self.single);

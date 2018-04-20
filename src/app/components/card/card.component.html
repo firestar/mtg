@@ -1,0 +1,50 @@
+<div fxLayout='column' class="list-container" *ngIf="setData !== null">
+  <div fxFlex="62px" fxLayout='row' class="header">
+    <div fxFlex="" class="set-header">
+      <h1>{{setData.name}}</h1>
+      <h2>{{setData.released_at}}</h2>
+    </div>
+    <div fxFlex="" class="added-counter">
+      <img height="55" style="margin-right:20px;margin-top:2px;" src="{{setData.icon_svg_uri}}">
+    </div>
+  </div>
+  <div fxFlex="shrink" fxLayout='row' class="content">
+    <div fxFlex="shrink" fxLayout='column'>
+      <div fxFlex="" style="border-bottom:1px solid #383838;">
+        <h2 style="color:#fff;padding-left:20px;">{{cardData.name}}</h2>
+      </div>
+      <div fxFlex="shrink" fxLayout='row'>
+        <div fxFlex="" style="border-right:1px solid #383838;border-bottom:1px solid #4a4a4a;padding-right:20px;">
+          <img src="{{cardData.image_uris.normal}}" width="300" style="margin: 5px;margin-left:25px;margin-top:20px;" />
+        </div>
+        <div fxFlex="shrink" style="border-bottom:1px solid #4a4a4a;">
+
+        </div>
+      </div>
+      <div fxFlex="" style="border-top:1px solid #383838;">
+        LEGALITIES
+      </div>
+    </div>
+    <div fxFlex="300px" fxLayout='column' style="border-left:1px solid #383838;">
+      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#fff;font-size:30px;word-break: keep-all;">
+        {{foil_value + value | currency}}
+      </div>
+      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+        foil value | {{foil_value | currency}}
+      </div>
+      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+        standard value | {{value| currency}}
+      </div>
+      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#fff;font-size:20px;word-break: keep-all;">
+        {{count + foil_count}} total cards
+      </div>
+      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+        {{foil_count}} foil cards
+      </div>
+      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+        {{count}} regular cards
+      </div>
+      <div fxFlex="shrink"></div>
+    </div>
+  </div>
+</div>
