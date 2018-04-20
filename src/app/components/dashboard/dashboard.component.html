@@ -25,22 +25,38 @@
             </div>
             <div fxFlex="" fxLayout='row'>
                 <div fxFlex="" class="column-margin">
-                    <mat-table #table [dataSource]="singleTableData" matSort>
-                        <ng-container matColumnDef="name">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="value">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> {{element.value | currency}} </mat-cell>
-                        </ng-container>
-                        <ng-container matColumnDef="set">
-                            <mat-header-cell *matHeaderCellDef mat-sort-header> Set </mat-header-cell>
-                            <mat-cell *matCellDef="let element"> <button mat-raised-button color="accent">{{element.set}} </button></mat-cell>
-                        </ng-container>
-                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
+                  <mat-table #table [dataSource]="singleTableData" matSort>
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="value">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.value | currency}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="set">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Set </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> <button mat-raised-button color="accent">{{element.set}} </button></mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="direction">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Trend </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <span *ngIf="direction[element.set] < 0" style="color:#b24140;"><mat-icon>trending_down</mat-icon></span>
+                        <span *ngIf="direction[element.set] === 0" style="color:#afa8b2;"><mat-icon>remove</mat-icon></span>
+                        <span *ngIf="direction[element.set] > 0" style="color:#4ab252;"><mat-icon>trending_up</mat-icon></span>
+                      </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="change">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Change </mat-header-cell>
+                      <mat-cell *matCellDef="let element">
+                        <span *ngIf="direction[element.set] < 0" style="color:#b24140;">{{direction[element.set] | currency}}</span>
+                        <span *ngIf="direction[element.set] === 0" style="color:#afa8b2;"> {{0  | currency}}</span>
+                        <span *ngIf="direction[element.set] > 0" style="color:#4ab252;">+{{direction[element.set] | currency}}</span>
+                      </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                  </mat-table>
                 </div>
                 <div fxFlex="50%" style="height: 600px;" class="column-margin">
                   <ngx-charts-area-chart-stacked

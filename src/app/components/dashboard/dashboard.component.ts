@@ -19,11 +19,12 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   setsData = {};
   cards = [];
   singleTableData = new MatTableDataSource(this.single);
-  displayedColumns = ['name', 'value', 'set'];
+  displayedColumns = ['name', 'value', 'direction', 'change', 'set'];
   value = 0.00;
   intervalFunc = null;
   historyChanged = false;
   days = [];
+  direction = {};
   colorScheme = {
     domain: []
   }
@@ -139,6 +140,16 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
             }
           }
         });
+
+        const today = new Date();
+        const dayStringToday = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+        const indexToday = self.days.indexOf(dayStringToday);
+
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const dayStringYesterday = yesterday.getFullYear() + '-' + yesterday.getMonth() + '-' + yesterday.getDate();
+        const indexYesterday = self.days.indexOf(dayStringYesterday);
+        self.direction[set] = historyTmp.series[indexToday].value - historyTmp.series[indexYesterday].value;
         historyTmp.total = totals[totalIndex];
         self.history.push(historyTmp);
         self.historyChanged = true;
