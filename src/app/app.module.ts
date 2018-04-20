@@ -39,6 +39,10 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import { CardComponent } from './components/card/card.component';
+import {MatChipsModule} from '@angular/material/chips';
+import {CardHistoryService} from './components/card-history.service';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -62,10 +66,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgxChartsModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSlideToggleModule,
     BrowserModule,
     BrowserAnimationsModule,
+    MatChipsModule,
     MatSelectModule,
     MatGridListModule,
+    MatRadioModule,
     MatInputModule,
     FlexLayoutModule,
     MatButtonModule,
@@ -83,7 +90,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, CardIndexService, StoredCardsService],
+  providers: [ElectronService, CardIndexService, StoredCardsService, CardHistoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

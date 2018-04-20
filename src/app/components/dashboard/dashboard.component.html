@@ -5,13 +5,13 @@
     </div>
     <div fxFlex="" fxLayout='column'>
         <div fxFlex="">
-            <h2 style="color:#fff;padding-left:20px;">Total Value In Collection: ${{value}}</h2>
+            <h2 style="color:#fff;padding-left:20px;">Total Value In Collection: ${{cardHistory.value}}</h2>
         </div>
         <div fxFlex="" fxLayout='column' class="items">
             <div fxFlex="" class="graph">
                 <ngx-charts-pie-chart style="color:#fff;"
                     [animations]="false"
-                    [results]="single"
+                    [results]="cardHistory.single"
                     [trimLabels]="false"
                     [legendTitle]="'MTG Sets'"
                     [scheme]="'forest'"
@@ -19,49 +19,48 @@
                     [explodeSlices]="false"
                     [labels]="true"
                     [doughnut]="true"
-                    (select)="onSelect($event)"
                     [gradient]="false">
                 </ngx-charts-pie-chart>
             </div>
             <div fxFlex="" fxLayout='row'>
-                <div fxFlex="" class="column-margin">
+                <div fxFlex="60%" class="column-margin">
                   <mat-table #table [dataSource]="singleTableData" matSort>
                     <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                        <mat-cell *matCellDef="let element" style="font-size:12px;"> {{element.name}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="value">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Value </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.value | currency}} </mat-cell>
+                        <mat-cell *matCellDef="let element" style="font-size:12px;"> {{element.value | currency}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="set">
                         <mat-header-cell *matHeaderCellDef mat-sort-header> Set </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> <button mat-raised-button color="accent">{{element.set}} </button></mat-cell>
+                        <mat-cell *matCellDef="let element" style="font-size:12px;"> <button mat-raised-button color="accent">{{element.set}} </button></mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="direction">
                       <mat-header-cell *matHeaderCellDef mat-sort-header> Trend </mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <span *ngIf="direction[element.set] < 0" style="color:#b24140;"><mat-icon>trending_down</mat-icon></span>
-                        <span *ngIf="direction[element.set] === 0" style="color:#afa8b2;"><mat-icon>remove</mat-icon></span>
-                        <span *ngIf="direction[element.set] > 0" style="color:#4ab252;"><mat-icon>trending_up</mat-icon></span>
+                      <mat-cell *matCellDef="let element" style="font-size:12px;">
+                        <span *ngIf="cardHistory.direction[element.set] < 0" style="color:#b24140;"><mat-icon>trending_down</mat-icon></span>
+                        <span *ngIf="cardHistory.direction[element.set] === 0" style="color:#afa8b2;"><mat-icon>remove</mat-icon></span>
+                        <span *ngIf="cardHistory.direction[element.set] > 0" style="color:#4ab252;"><mat-icon>trending_up</mat-icon></span>
                       </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="change">
                       <mat-header-cell *matHeaderCellDef mat-sort-header> Change </mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <span *ngIf="direction[element.set] < 0" style="color:#b24140;">{{direction[element.set] | currency}}</span>
-                        <span *ngIf="direction[element.set] === 0" style="color:#afa8b2;"> {{0  | currency}}</span>
-                        <span *ngIf="direction[element.set] > 0" style="color:#4ab252;">+{{direction[element.set] | currency}}</span>
+                      <mat-cell *matCellDef="let element" style="font-size:12px;">
+                        <span *ngIf="cardHistory.direction[element.set] < 0" style="color:#b24140;">{{cardHistory.direction[element.set] | currency}}</span>
+                        <span *ngIf="cardHistory.direction[element.set] === 0" style="color:#afa8b2;"> {{0  | currency}}</span>
+                        <span *ngIf="cardHistory.direction[element.set] > 0" style="color:#4ab252;">+{{cardHistory.direction[element.set] | currency}}</span>
                       </mat-cell>
                     </ng-container>
                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
                   </mat-table>
                 </div>
-                <div fxFlex="50%" style="height: 600px;" class="column-margin">
+                <div fxFlex="40%" style="height: 600px;" class="column-margin">
                   <ngx-charts-area-chart-stacked
                     [scheme]="colorScheme"
-                    [results]="history"
+                    [results]="cardHistory.history"
                     [gradient]="false"
                     [xAxis]="true"
                     [yAxis]="true"

@@ -12,7 +12,7 @@
     <div fxLayout='row' fxFlex="46px" class="paginator-top">
       <div fxFlex="46%">
         <mat-form-field>
-          <mat-select class="whiteText" placeholder="Selected Set" [(value)]="selectedSet" (change)="recalculateList()">
+          <mat-select class="whiteText" placeholder="Selected Set" [(value)]="storedCards.selectedSet" (change)="changedSet()">
             <mat-option value="*">All</mat-option>
             <mat-option *ngFor="let set of sets" [value]="set">
               {{ set }}
@@ -27,31 +27,38 @@
       <div fxFlex="46%" class="pagination">
         <mat-paginator [length]="cards.length"
                        [pageSize]="limit"
-                       [pageIndex]="page"
+                       [pageIndex]="storedCards.page"
                        [pageSizeOptions]="[limit]"
-                       (page)="page = $event.pageIndex"
+                       (page)="storedCards.page = $event.pageIndex"
                        [showFirstLastButtons]="true">
         </mat-paginator>
       </div>
 
     </div>
     <div fxFlex="shrink" appBindWidth [widthFunc]="width" style="max-width:100%;overflow-y:scroll;">
-      <a *ngFor="let card of cards.slice(page * limit, page * limit + limit);" [routerLink]="['/card', card.set, card.card]" style="float:left;margin:20px;color:#c3d9ff;">
+      <a *ngFor="let card of cards.slice(storedCards.page * limit, storedCards.page * limit + limit);" [routerLink]="['/card', card.set, card.card]" style="float:left;margin:20px;color:#c3d9ff;">
         <img style="width:180px;" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" /><br/>
         {{card.set}} / {{card.card}}<br/>
         {{card.count}} s <span *ngIf="card.foil_count">| {{card.foil_count}} f</span>
       </a>
     </div>
     <div fxFlex="33px" fxLayout='row' class="paginator-bottom">
-      <div fxFlex="50%">
+      <div fxFlex="30%">
         <h3 style="color:#fff;padding:0px;margin:9px;">{{setInfo.name}}</h3>
       </div>
-      <div  fxFlex="50%" class="pagination">
+      <div fxFlex="shrink" style="padding-top:10px;">
+        <mat-radio-group class="example-radio-group" (change)="sort()" [(ngModel)]="storedCards.sortBy">
+          <mat-radio-button class="example-radio-button" *ngFor="let sortingType of sortingTypes" [value]="sortingType">
+            {{sortingType}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div  fxFlex="30%" class="pagination">
         <mat-paginator style="margin-top:-10px !important;" [length]="cards.length"
                        [pageSize]="limit"
-                       [pageIndex]="page"
+                       [pageIndex]="storedCards.page"
                        [pageSizeOptions]="[limit]"
-                       (page)="page = $event.pageIndex"
+                       (page)="storedCards.page = $event.pageIndex"
                        [showFirstLastButtons]="true">
         </mat-paginator>
       </div>

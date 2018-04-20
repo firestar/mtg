@@ -1,4 +1,4 @@
-<div fxLayout='column' class="list-container" *ngIf="setData !== null">
+<div fxLayout='column' class="list-container" *ngIf="setData !== null && cardData != null">
   <div fxFlex="62px" fxLayout='row' class="header">
     <div fxFlex="" class="set-header">
       <h1>{{setData.name}}</h1>
@@ -10,39 +10,111 @@
   </div>
   <div fxFlex="shrink" fxLayout='row' class="content">
     <div fxFlex="shrink" fxLayout='column'>
-      <div fxFlex="" style="border-bottom:1px solid #383838;">
-        <h2 style="color:#fff;padding-left:20px;">{{cardData.name}}</h2>
+      <div fxFlex="" fxLayout='row' style="border-bottom:1px solid #424242;">
+        <div fxFlex="">
+          <h2 style="color:#fff;padding-left:20px;">
+            {{cardData.name}}
+            <small style="font-size:15px;color:#acacac;" *ngIf="cardData.type_line">{{cardData.type_line}}</small>
+            <small style="margin-left:20px;font-size:25px;" class="color-{{cardData.rarity}}" *ngIf="cardData.rarity">
+              <i class="ss ss-{{localCardData.set}}"></i>
+              <small style="font-size:12px;padding-left:5px;">{{cardData.rarity}}</small>
+            </small>
+          </h2>
+        </div>
+        <div fxFlex="" style="text-align:right;padding-top:20px;padding-right:10px;" class="mana-price">
+          <abbr *ngFor="let mc of manaCost" class="card-symbol card-symbol-{{mc}}"></abbr>
+        </div>
       </div>
       <div fxFlex="shrink" fxLayout='row'>
-        <div fxFlex="" style="border-right:1px solid #383838;border-bottom:1px solid #4a4a4a;padding-right:20px;">
-          <img src="{{cardData.image_uris.normal}}" width="300" style="margin: 5px;margin-left:25px;margin-top:20px;" />
+        <div fxFlex="" style="padding-right:20px;" class="image-spot">
+          <img *ngIf="cardData.image_uris" src="{{cardData.image_uris.art_crop}}" />
+          <img *ngIf="cardData.card_faces && cardData.card_faces[0].image_uris" src="{{cardData.card_faces[0].image_uris.art_crop}}" /><br>
+          <span>Illustrated By: {{cardData.artist}}</span><br>
+          <i style="font-size:12px;padding-left:30px;padding-top:10px;padding-right:30px;color:#cecece;display:block;">{{cardData.flavor_text}}</i><br>
+          <span *ngIf="cardData.power" style="color:#fff;text-align:center;display: block;font-size: 35px;">
+            {{cardData.power}} / {{cardData.toughness}}
+          </span>
         </div>
-        <div fxFlex="shrink" style="border-bottom:1px solid #4a4a4a;">
-
+        <div fxFlex="shrink" fxLayout='column'>
+          <div fxFlex="">
+            <span *ngIf="cardData.oracle_text" [innerHTML]="cardData.oracle_text" class="oracle"></span>
+          </div>
         </div>
       </div>
-      <div fxFlex="" style="border-top:1px solid #383838;">
-        LEGALITIES
+      <div fxFlex="" style="padding-top:12px;text-align:center;">
+        <mat-chip-list style="text-align:center;">
+          <mat-chip selected="true" [color]="(cardData.legalities['1v1'] == 'not_legal') ? 'warn' : 'accent'">1v1</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['brawl'] == 'not_legal') ? 'warn' : 'accent')">brawl</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['commander'] == 'not_legal') ? 'warn' : 'accent')">commander</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['duel'] == 'not_legal') ? 'warn' : 'accent')">duel</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['frontier'] == 'not_legal') ? 'warn' : 'accent')">frontier</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['future'] == 'not_legal') ? 'warn' : 'accent')">future</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['legacy'] == 'not_legal') ? 'warn' : 'accent')">legacy</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['modern'] == 'not_legal') ? 'warn' : 'accent')">modern</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['pauper'] == 'not_legal') ? 'warn' : 'accent')">pauper</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['penny'] == 'not_legal') ? 'warn' : 'accent')">penny</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['standard'] == 'not_legal') ? 'warn' : 'accent')">standard</mat-chip>
+          <mat-chip selected="true" [color]="((cardData.legalities['vintage'] == 'not_legal') ? 'warn' : 'accent')">vintage</mat-chip>
+        </mat-chip-list>
       </div>
     </div>
-    <div fxFlex="300px" fxLayout='column' style="border-left:1px solid #383838;">
-      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#fff;font-size:30px;word-break: keep-all;">
+    <div fxFlex="300px" fxLayout='column' style="border-left:1px solid #424242;">
+      <div fxFlex="" class="entry-header-h2">
+        Value In Collection
+      </div>
+      <div fxFlex="" class="entry-header-h3">
         {{foil_value + value | currency}}
       </div>
-      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+      <div fxFlex="" class="entry-row">
         foil value | {{foil_value | currency}}
       </div>
-      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+      <div fxFlex="" class="entry-row">
         standard value | {{value| currency}}
       </div>
-      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#fff;font-size:20px;word-break: keep-all;">
+      <div fxFlex="" class="entry-header-h2">
+        Count In Collection
+      </div>
+      <div fxFlex="" class="entry-header-h3">
         {{count + foil_count}} total cards
       </div>
-      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+      <div fxFlex="" class="entry-row">
         {{foil_count}} foil cards
       </div>
-      <div fxFlex="" style="text-align:right;padding-right:20px;padding-top:20px;color:#9195b5;font-size:15px;word-break: keep-all;">
+      <div fxFlex="" class="entry-row">
         {{count}} regular cards
+      </div>
+      <div fxFlex="" class="entry-header-h2">
+        Trend / Change
+      </div>
+      <div *ngIf="localCardData.count>0" fxFlex="" class="entry-row">
+        Regular Card
+      </div>
+      <div *ngIf="localCardData.count>0" fxFlex="" fxLayout='row' class="entry-row">
+        <div fxFlex="50%">
+          <span *ngIf="direction < 0" style="color:#b24140;"><mat-icon>trending_down</mat-icon></span>
+          <span *ngIf="direction === 0" style="color:#afa8b2;"><mat-icon>remove</mat-icon></span>
+          <span *ngIf="direction > 0" style="color:#4ab252;"><mat-icon>trending_up</mat-icon></span>
+        </div>
+        <div fxFlex="50%" style="text-align:right;">
+          <span *ngIf="direction < 0" style="color:#b24140;">{{direction | currency}}</span>
+          <span *ngIf="direction === 0" style="color:#afa8b2;"> {{0  | currency}}</span>
+          <span *ngIf="direction > 0" style="color:#4ab252;">+{{direction | currency}}</span>
+        </div>
+      </div>
+      <div *ngIf="localCardData.foil_count>0" fxFlex="" class="entry-row">
+        Foil Card
+      </div>
+      <div *ngIf="localCardData.foil_count>0" fxFlex="" fxLayout='row' class="entry-row">
+        <div fxFlex="50%">
+          <span *ngIf="direction_foil < 0" style="color:#b24140;"><mat-icon>trending_down</mat-icon></span>
+          <span *ngIf="direction_foil === 0" style="color:#afa8b2;"><mat-icon>remove</mat-icon></span>
+          <span *ngIf="direction_foil > 0" style="color:#4ab252;"><mat-icon>trending_up</mat-icon></span>
+        </div>
+        <div fxFlex="50%" style="text-align:right;">
+          <span *ngIf="direction_foil < 0" style="color:#b24140;">{{direction_foil | currency}}</span>
+          <span *ngIf="direction_foil === 0" style="color:#afa8b2;"> {{0  | currency}}</span>
+          <span *ngIf="direction_foil > 0" style="color:#4ab252;">+{{direction_foil | currency}}</span>
+        </div>
       </div>
       <div fxFlex="shrink"></div>
     </div>

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import {HttpClient} from '@angular/common/http';
 import {StoredCardsService} from '../stored-cards.service';
 import {CardIndexService} from '../card-index.service';
+import {CardHistoryService} from '../card-history.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +16,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   win;
   screen;
   isMax;
-  constructor(public _electronService: ElectronService, private http: HttpClient, private cardService: CardIndexService, private storedCards: StoredCardsService) {
+  constructor(private cardHistory: CardHistoryService, public _electronService: ElectronService, private http: HttpClient, private cardService: CardIndexService, private storedCards: StoredCardsService) {
     this.electronService = _electronService;
     this.win = this._electronService.remote.getCurrentWindow();
     this.screen =  this._electronService.screen.getPrimaryDisplay();

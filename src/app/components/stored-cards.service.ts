@@ -5,6 +5,9 @@ export class StoredCardsService {
   cards = null;
   totals = null;
   prices = null;
+  sortBy = 'set';
+  selectedSet = '*';
+  page = 0;
   constructor() {
     if (!this.cards) {
       const cards = localStorage.getItem('cards');
