@@ -62,7 +62,8 @@ export class StoredCardsService {
                 return flatListArray;
               }
               const card = set[cardIds[j]];
-              if (!card.lastCheck || new Date(card.lastCheck) < beforeTime) {
+              const date = new Date(card.lastCheck);
+              if (!card.lastCheck || date.getDate() !== beforeTime) {
                   card.set = sets[i];
                   card.card = cardIds[j];
                   flatListArray.push(card);

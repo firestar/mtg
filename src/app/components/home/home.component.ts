@@ -97,8 +97,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     Observable.interval(30 * 1000).subscribe(() => {
       console.log('updating card data');
       const s = new Date();
-      s.setDate(s.getDate() - 1);
-      const cards = self.storedCards.flatList(s, 25);
+      const cards = self.storedCards.flatList(s.getDate(), 25);
       if (cards) {
           console.log(cards);
           console.log(cards.length);
