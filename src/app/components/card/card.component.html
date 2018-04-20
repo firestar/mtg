@@ -11,7 +11,7 @@
   <div fxFlex="shrink" fxLayout='row' class="content">
     <div fxFlex="shrink" fxLayout='column'>
       <div fxFlex="" fxLayout='row' style="border-bottom:1px solid #424242;">
-        <div fxFlex="">
+        <div fxFlex="shrink">
           <h2 style="color:#fff;padding-left:20px;">
             {{cardData.name}}
             <small style="font-size:15px;color:#acacac;" *ngIf="cardData.type_line">{{cardData.type_line}}</small>
@@ -21,7 +21,7 @@
             </small>
           </h2>
         </div>
-        <div fxFlex="" style="text-align:right;padding-top:20px;padding-right:10px;" class="mana-price">
+        <div fxFlex="300px" style="text-align:right;padding-top:20px;padding-right:10px;" class="mana-price">
           <abbr *ngFor="let mc of manaCost" class="card-symbol card-symbol-{{mc}}"></abbr>
         </div>
       </div>
