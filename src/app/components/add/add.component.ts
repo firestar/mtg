@@ -138,6 +138,16 @@ export class AddComponent implements OnInit {
     this.addSource = new MatTableDataSource(this.addSourceTable.slice(0).reverse());
     this.cardService.findSets((sets) => {
       this.setData = sets.data;
+      this.setData.sort( (a, b) => {
+        const aRelease = new Date(a.released_at);
+        const bRelease = new Date(b.released_at);
+        if (bRelease > aRelease) {
+          return 1;
+        } else if (bRelease < aRelease) {
+          return -1;
+        }
+        return 0;
+      });
     });
   }
 
