@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
+import {CardIndexService} from './card-index.service';
 
 @Injectable()
 export class StoredCardsService {
   cards = null;
   totals = null;
   prices = null;
-  sortBy = 'set';
+  sortBy = 'Set';
   selectedSet = '*';
   page = 0;
-  constructor() {
+  constructor(private cardIndex: CardIndexService) {
     if (!this.cards) {
       const cards = localStorage.getItem('cards');
       if (cards) {
@@ -92,14 +93,30 @@ export class StoredCardsService {
       }
       this.prices.current[set][id] = price;
   }
-  public addCardBySetAndId(set, id, card, foil) {
+  public addCardBySetAndId(set, id, foil, func) {
     if (!set || set === 'null' || !id || id === 'null') {
         return;
     }
     if (!this.cards[set]) {
         this.cards[set] = {};
     }
+    const add = () => {
+      if (!this.totals.sets[set]) {
+        this.totals.sets[set] = 0;
+      }
+      if (foil) {
+        this.cards[set][id].foil_count++;
+      } else {
+        this.cards[set][id].count++;
+      }
+      console.log(this.cards);
+      this.totals.sets[set]++;
+      this.totals.cards++;
+      this.save();
+      func({set: set, id: id, foil: foil});
+    }
     if (!this.cards[set][id]) {
+      this.cardIndex.findCard( set, id, (card) => {
         this.setPrice(set, id, card.usd);
         this.cards[set][id] = {
           count: 0,
@@ -109,19 +126,11 @@ export class StoredCardsService {
           mtgo_id: card.mtgo_id,
           img: 'https://img.scryfall.com/cards/png/en/' + set + '/' + id + '.png'
         };
-    }
-    if (!this.totals.sets[set]) {
-        this.totals.sets[set] = 0;
-    }
-    if (foil) {
-      this.cards[set][id].foil_count++;
+        add();
+      });
     } else {
-      this.cards[set][id].count++;
+      add();
     }
-    console.log(this.cards);
-    this.totals.sets[set]++;
-    this.totals.cards++;
-    this.save();
   }
 
   public getBySetAndId(set, id) {

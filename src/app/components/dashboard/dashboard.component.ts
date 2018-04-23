@@ -22,7 +22,7 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
 
   colorScheme = {
     domain: []
-  }
+  };
 
   constructor(private cardService: CardIndexService, private storedCards: StoredCardsService, private cardHistory: CardHistoryService) { }
 
@@ -59,9 +59,4 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnDestroy() {
     clearInterval(this.intervalFunc);
   }
-}
-export interface Element {
-  name: string;
-  value: number;
-  set: string;
 }

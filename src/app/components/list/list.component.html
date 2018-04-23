@@ -36,19 +36,47 @@
 
     </div>
     <div fxFlex="shrink" appBindWidth [widthFunc]="width" style="max-width:100%;overflow-y:scroll;">
-      <a *ngFor="let card of cards.slice(storedCards.page * limit, storedCards.page * limit + limit);" [routerLink]="['/card', card.set, card.card]" style="float:left;margin:20px;color:#c3d9ff;">
-        <img style="width:180px;" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" /><br/>
-        {{card.set}} / {{card.card}}<br/>
-        {{card.count}} s <span *ngIf="card.foil_count">| {{card.foil_count}} f</span>
+      <a *ngFor="let card of cards.slice(storedCards.page * limit, storedCards.page * limit + limit);" style="text-decoration: none;width:180px;float:left;margin:10px 20px 30px 20px;color:#c3d9ff;">
+        <img [routerLink]="['/card', card.set, card.card]" (error)="imgError($event, card);" src="https://img.scryfall.com/cards/normal/en/{{card.set}}/{{card.card}}.jpg" />
+        <span *ngIf="card.foil_count" fxLayout='row' class="counter noselect">
+          <div fxFlex="">
+            <mat-icon (click)="add(card.card, card.set)">add</mat-icon>
+          </div>
+          <div fxFlex="shrink">
+            {{card.count}}, {{card.foil_count}}<br/>
+            <small  style="font-size:12px;">({{card.set}}, {{card.card}})</small><br/>
+            <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) < 0" style="color:#b24140;font-size:13px;">{{cardHistory.directionTodayDaysAgoCache(card, 2) | currency}}</span>
+            <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) === 0" style="color:#afa8b2;font-size:13px;"> {{0  | currency}}</span>
+            <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) > 0" style="color:#4ab252;font-size:13px;">+{{cardHistory.directionTodayDaysAgoCache(card, 2) | currency}}</span>
+          </div>
+          <div fxFlex="">
+            <mat-icon (click)="remove(card.card, card.set)">remove</mat-icon>
+          </div>
+        </span>
+        <span *ngIf="!card.foil_count" fxLayout='row' class="counter noselect">
+          <div fxFlex="">
+            <mat-icon (click)="add(card.card, card.set)">add</mat-icon>
+          </div>
+          <div fxFlex="shrink">
+            {{card.count}}<br/>
+            <small  style="font-size:12px;">({{card.set}}, {{card.card}})</small><br/>
+            <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) < 0" style="color:#b24140;font-size:13px;">{{cardHistory.directionTodayDaysAgoCache(card, 2) | currency}}</span>
+            <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) === 0" style="color:#afa8b2;font-size:13px;"> {{0  | currency}}</span>
+            <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) > 0" style="color:#4ab252;font-size:13px;">+{{cardHistory.directionTodayDaysAgoCache(card, 2) | currency}}</span>
+          </div>
+          <div fxFlex="">
+            <mat-icon (click)="remove(card.card, card.set)">remove</mat-icon>
+          </div>
+        </span>
       </a>
     </div>
-    <div fxFlex="33px" fxLayout='row' class="paginator-bottom">
+    <div fxFlex="38px" fxLayout='row' class="paginator-bottom">
       <div fxFlex="30%">
         <h3 style="color:#fff;padding:0px;margin:9px;">{{setInfo.name}}</h3>
       </div>
-      <div fxFlex="shrink" style="padding-top:10px;">
-        <mat-radio-group class="example-radio-group" (change)="sort()" [(ngModel)]="storedCards.sortBy">
-          <mat-radio-button class="example-radio-button" *ngFor="let sortingType of sortingTypes" [value]="sortingType">
+      <div fxFlex="shrink" style="padding-top:12px;">
+        <mat-radio-group (change)="sort()" [(ngModel)]="storedCards.sortBy">
+          <mat-radio-button *ngFor="let sortingType of sortingTypes" [value]="sortingType">
             {{sortingType}}
           </mat-radio-button>
         </mat-radio-group>

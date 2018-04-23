@@ -39,18 +39,44 @@
   .content{
     padding:10px;
     height:100%;
+    .counter {
+      padding: 4px 8px 4px 8px;
+      display: block;
+      text-align:center;
+      font-size: 18px;
+      margin-top:-80px;
+      z-index: 20;
+      position:relative;
+      background: rgba(24, 21, 16, 0.9);
+      color: #f0f0f0;
+      mat-icon {
+        font-size: 16px !important;
+        padding:3px !important;
+        width:auto !important;
+        height:auto !important;
+        cursor:pointer;
+        border-radius: 5px;
+        background: #292929 !important;
+      }
+      mat-icon:hover {
+        background: #393939 !important;
+      }
+      mat-icon:active {
+        background: #ababab !important;
+      }
+    }
     img{
       border-radius:8px;
+      z-index: 19;
+      cursor:pointer;
+      width:180px;
+      position:relative;
     }
     .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
       background: none !important;
     }
     .mat-paginator, .mat-paginator-page-size .mat-select-trigger {
       color: #c19cd8 !important;
-    }
-    .mat-icon-button{
-      width:20px !important;
-      height:20px !important;
     }
     .mat-paginator-container{
       min-height: 30px !important;
@@ -60,14 +86,15 @@
     }
     .paginator-top{
       width:100%;
-      border-bottom:3px solid #6e8187;
+      border-bottom:1px solid #6e8187;
       .whiteText .mat-select-content{
         color:#fff !important;
       }
     }
     .paginator-bottom{
       width:100%;
-      border-top:3px solid #6e8187;
+      overflow: hidden;
+      border-top:1px solid #6e8187;
     }
     .pagination{
       text-align:right;

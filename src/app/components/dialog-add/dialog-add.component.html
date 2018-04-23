@@ -1,0 +1,15 @@
+<div class="content" fxLayout='column'>
+  <div fxFlex="">
+    {{card.name}} {{card.count}}
+  </div>
+  <div fxFlex="" fxLayout='row'>
+    <div fxFlex="50%" style="text-align: center;">
+      <h3>Regular Card ( {{card.count}} )</h3>
+      <button (click)="add()" mat-raised-button color="primary"><mat-icon>add</mat-icon> Add</button>
+    </div>
+    <div fxFlex="50%" style="text-align: center;">
+      <h3>Foil Card ( {{card.foil_count}} )</h3>
+      <button (click)="addFoil()" mat-raised-button color="primary"><mat-icon>add</mat-icon> Add</button>
+    </div>
+  </div>
+</div>

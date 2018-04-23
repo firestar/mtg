@@ -13,7 +13,7 @@
       <mat-form-field fxFlex="20px" class="full-width">
         <input matInput autofocus type="text" [(ngModel)]="selectedSetId" (keyup)="checkSet($event)" [appfocus]="setFocusEmitter"/>
       </mat-form-field>
-      <div fxFlex="" *ngIf="selectedSet" fxLayout='row' class="mtg-set-header">
+      <div fxFlex="" *ngIf="selectedSet && selectedSetId != ''" fxLayout='row' class="mtg-set-header">
         <div fxFlex="">
           <h1>{{selectedSet.name}}</h1>
         </div>
@@ -21,7 +21,7 @@
           <img style="max-width:50px;" src="{{selectedSet.icon_svg_uri}}">
         </div>
       </div>
-      <div fxFlex="shrink" *ngIf="selectedSet" fxLayout='row' class="mtg-set-data">
+      <div fxFlex="shrink" *ngIf="selectedSet && selectedSetId != ''" fxLayout='row' class="mtg-set-data">
         <ul>
           <li>Total Cards: {{selectedSet.card_count}}<hr></li>
           <li>Type: {{selectedSet.set_type}}<hr></li>
@@ -31,8 +31,9 @@
     </div>
     <div fxFlex="" class="center-left-border">
       <mat-form-field class="full-width">
-        <input matInput mat-dark-theme type="text" [(ngModel)]="selectedCardId" (keyup)="checkCard($event)" [appfocus]="cardFocusEmitter"/>
+        <input matInput mat-dark-theme type="text" [(ngModel)]="selectedCardId" (keydown)="checkCard($event)" [appfocus]="cardFocusEmitter"/>
       </mat-form-field>
+      <mat-checkbox [(ngModel)]="enablePreview">Enable Preview</mat-checkbox>
       <div *ngIf="selectedCard" fxLayout='row'>
         <div fxFlex="shrink">
           <h1>{{selectedCard.name}}</h1><br/>
@@ -49,6 +50,43 @@
           </span>
         </div>
       </div>
+    </div>
+  </div>
+  <div fxFlex="" style="margin-top:100px;" *ngIf="!selectedSetId">
+    <span
+      *ngFor="let set of setData"
+      (click)="selectedSetId=set.code; checkSet($event)"
+      style="background:#3a3a3a;cursor:pointer;border-radius:4px;color:#cbcbcb;width:100px;display:inline-block;font-size:14px;margin:5px;padding:5px;text-align:center;">
+      <img style="width:45px;" src="{{set.icon_svg_uri}}"/><br/>
+      {{set.name}}
+    </span>
+  </div>
+  <div fxFlex="" fxLayout='column'>
+    <div fxFlex="30px" style="padding:0px 20px 0px 20px;margin: 0px;">
+      <h2 style="padding: 0px;margin: 0px;">History</h2>
+    </div>
+    <div fxFlex="" style="padding:0px 20px 0px 20px;margin: 0px;">
+      <mat-table [dataSource]="addSource">
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+          <mat-cell *matCellDef="let row" style="font-size:12px;"> {{storedCards.cards[row.set][row.id].name}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="foil">
+          <mat-header-cell *matHeaderCellDef> Foil </mat-header-cell>
+          <mat-cell *matCellDef="let row" style="font-size:12px;">
+            <mat-icon style="color:#9effa3;" *ngIf="row.foil">check</mat-icon>
+            <mat-icon style="color:#ff777d;" *ngIf="!row.foil">close</mat-icon>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="remove">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let row; let i = index;" style="font-size:12px;text-align:right;">
+            <button mat-raised-button color="warn" (click)="remove(row.set, row.id, row.foil, i)">Remove</button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
     </div>
   </div>
 </div>

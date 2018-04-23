@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {StoredCardsService} from '../stored-cards.service';
 import {CardIndexService} from '../card-index.service';
 import {EventEmitter} from '@angular/core';
+import {MatTableDataSource} from '@angular/material';
+import {Element} from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-add',
@@ -13,9 +15,14 @@ export class AddComponent implements OnInit {
   selectedSetId = null;
   selectedSet = null;
   added = 0;
+  setData = null;
   selectedCardId = null;
   selectedCard = null;
   backspaceCount = 0;
+  enablePreview = false;
+  addSourceTable: Element[]  = [];
+  addSource: Element[]  = [];
+  displayedColumns = ['name', 'foil', 'remove'];
 
   public setFocusEmitter = new EventEmitter<boolean>();
   public cardFocusEmitter = new EventEmitter<boolean>();
@@ -39,57 +46,107 @@ export class AddComponent implements OnInit {
       }
     }, 200);
   }
-  checkCard(e) {
+  async checkCard(e) {
     const self = this;
     if (e.key === '+') {
-        self.selectedCardId = self.selectedCardId.substr(0, self.selectedCardId.length - 1);
-        self.storedCards.addCardBySetAndId(self.selectedSetId, self.selectedCardId, self.selectedCard, true);
-        self.added++;
-        self.selectedCardId = null;
-        self.selectedCard = null;
-        return;
+      e.preventDefault();
+      self.storedCards.addCardBySetAndId(self.selectedSetId, self.selectedCardId, true, (data) => {
+        const el: Element = {set: data.set, id: data.id, foil: data.foil};
+        this.addSourceTable.push(el);
+        this.addSource = new MatTableDataSource( this.addSourceTable.slice(0).reverse() );
+      });
+      self.added++;
+      self.selectedCardId = null;
+      self.selectedCard = null;
+      return;
     } else if (e.key === 'Enter') {
-      self.storedCards.addCardBySetAndId(self.selectedSetId, self.selectedCardId, self.selectedCard, false);
+      self.storedCards.addCardBySetAndId(self.selectedSetId, self.selectedCardId, false, (data) => {
+        const el: Element = {set: data.set, id: data.id, foil: data.foil};
+        this.addSourceTable.push(el);
+        this.addSource = new MatTableDataSource( this.addSourceTable.slice(0).reverse() );
+      });
       self.added++;
       self.selectedCardId = null;
       self.selectedCard = null;
       return;
     } else if (e.key === 'Backspace') {
       if (!self.selectedCardId) {
-          if (self.backspaceCount === 1) {
-              self.selectedSetId = null;
-              self.selectedSet = null;
-              this.setFocusEmitter.emit(true);
-              self.backspaceCount = 0;
-          } else {
-              self.selectedCardId = null;
-              self.selectedCard = null;
-              self.backspaceCount++;
-          }
-          return;
+        if (self.backspaceCount === 1) {
+          self.selectedSetId = null;
+          self.selectedSet = null;
+          this.setFocusEmitter.emit(true);
+          self.backspaceCount = 0;
+        } else {
+          self.selectedCardId = null;
+          self.selectedCard = null;
+          self.backspaceCount++;
+        }
+        return;
       }
     }
     self.backspaceCount = 0;
-    self.cardCounter++;
-    const x = self.cardCounter;
-    setTimeout(() => {
+    if (self.enablePreview) {
+      self.cardCounter++;
+      const x = self.cardCounter;
+      setTimeout(() => {
         if (self.cardCounter === x) {
           if (/([0-9]+)/i.test(self.selectedCardId)) {
             self.cardService.findCard(self.selectedSetId, self.selectedCardId, card => {
               if (!card) {
-                  self.selectedCard = null;
+                self.selectedCard = null;
               } else {
-                  self.selectedCard = card;
+                self.selectedCard = card;
               }
             });
           }
         }
-    }, 300);
+      }, 300);
+    }
   }
 
-  constructor(private cardService: CardIndexService, private storedCards: StoredCardsService) { }
+  remove(set, id, foil, index) {
+    this.added--;
+    const idx = this.addSourceTable.length - index - 1;
+    this.addSourceTable.splice(idx, 1);
+    this.addSource = new MatTableDataSource(this.addSourceTable.slice(0).reverse());
+    const card = this.storedCards.cards[set][id];
+    if (!foil) {
+      if (card.count) {
+        card.count--;
+        if (card.count < 0) {
+          card.count = 0;
+        }
+        if (!card.count && !card.foil_count) {
+          delete this.storedCards.cards[card.set][card.card];
+        }
+      }
+    } else {
+      if (card.foil_count) {
+        card.foil_count--;
+        if (card.foil_count < 0) {
+          card.foil_count = 0;
+        }
+        if (!card.count && !card.foil_count) {
+          delete this.storedCards.cards[card.set][card.card];
+        }
+      }
+    }
+    this.storedCards.save();
+  }
+
+  constructor(private cardService: CardIndexService, private storedCards: StoredCardsService) {
+    this.addSource = new MatTableDataSource(this.addSourceTable.slice(0).reverse());
+    this.cardService.findSets((sets) => {
+      this.setData = sets.data;
+    });
+  }
 
   ngOnInit() {
   }
 
+}
+export interface Element {
+  id: number;
+  set: number;
+  foil: boolean;
 }

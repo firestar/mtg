@@ -17,11 +17,16 @@ export class CardHistoryService {
   direction = {};
   intervalFunc = null;
   today;
+  daysAgo = {};
   yesterday;
+  directionCache = {};
   constructor (private cardService: CardIndexService, private storedCards: StoredCardsService) {
     this.today = new Date();
-    this.yesterday = new Date();
-    this.yesterday.setDate(this.yesterday.getDate() - 1);
+    for (let i = 0; i < 20; i ++) {
+      this.daysAgo[i] = new Date();
+      this.daysAgo[i].setDate(this.today.getDate() - i);
+    }
+    this.yesterday = this.daysAgo[1];
     this.reset();
     this.intervalFunc = setInterval(() => {
       this.reset();
@@ -38,6 +43,7 @@ export class CardHistoryService {
     this.historyChanged = false;
     this.days = [];
     this.direction = {};
+    this.directionCache = {};
     this.calculateForSet( 0 );
   }
   calculateForSet (setNum) {
@@ -170,7 +176,96 @@ export class CardHistoryService {
       }
     }
   }
-
+  directionTodayDaysAgoCache(card, ago) {
+    let priceChange = 0;
+    const cacheKey =  'todayDaysAgo_' + card.set + '_' + card.card + '_' + ago;
+    if (this.directionCache[cacheKey]) {
+      priceChange = this.directionCache[cacheKey];
+    } else {
+      priceChange = this.directionTodayDaysAgo(card, ago);
+      this.directionCache[cacheKey] = priceChange;
+    }
+    return priceChange;
+  }
+  directionForDays(card, days) {
+    let priceChange = 0;
+    const cacheKey = card.set + '_' + card.card + '_' + days;
+    if (this.directionCache[cacheKey]) {
+      priceChange = this.directionCache[cacheKey];
+    } else {
+      for (let i = 1; i < days; i++) {
+        priceChange += this.directionDaysAgo(card, i - 1, i);
+      }
+      this.directionCache[cacheKey] = priceChange;
+    }
+    return priceChange;
+  }
+  directionDaysAgo(card, start, end) {
+    const self = this;
+    const history = self.storedCards.prices.history[card.set][card.card];
+    let startPrice = 0;
+    let endPrice = 0;
+    history.forEach((e) => {
+      const day = new Date(e[1]);
+      if (
+        day.getDate() === self.daysAgo[start].getDate()
+        && day.getMonth() === self.daysAgo[start].getMonth()
+        && day.getFullYear() === self.daysAgo[start].getFullYear()) {
+        startPrice = e[0];
+      }
+      if (
+        day.getDate() === self.daysAgo[end].getDate()
+        && day.getMonth() === self.daysAgo[end].getMonth()
+        && day.getFullYear() === self.daysAgo[end].getFullYear()) {
+        endPrice = e[0];
+      }
+    });
+    return startPrice - endPrice;
+  }
+  directionTodayDaysAgo(card, ago) {
+    const self = this;
+    const history = self.storedCards.prices.history[card.set][card.card];
+    let daysAgo = 0;
+    let today = 0;
+    history.forEach((e) => {
+      const day = new Date(e[1]);
+      if (
+        day.getDate() === self.today.getDate()
+        && day.getMonth() === self.today.getMonth()
+        && day.getFullYear() === self.today.getFullYear()) {
+        today = e[0];
+      }
+      if (
+        day.getDate() === self.daysAgo[ago].getDate()
+        && day.getMonth() === self.daysAgo[ago].getMonth()
+        && day.getFullYear() === self.daysAgo[ago].getFullYear()) {
+        daysAgo = e[0];
+      }
+    });
+    return today - daysAgo;
+  }
+  directionTodayToYesterday(card) {
+    const self = this;
+    const history = self.storedCards.prices.history[card.set][card.card];
+    let yesterday = 0;
+    let today = 0;
+    history.forEach((e) => {
+      const day = new Date(e[1]);
+      if (
+        day.getDate() === self.today.getDate()
+        && day.getMonth() === self.today.getMonth()
+        && day.getFullYear() === self.today.getFullYear()) {
+        today = e[0];
+      }
+      if (
+        day.getDate() === self.yesterday.getDate()
+        && day.getMonth() === self.yesterday.getMonth()
+        && day.getFullYear() === self.yesterday.getFullYear()) {
+        yesterday = e[0];
+      }
+    });
+    return today - yesterday;
+  }
 }
 export interface Element {
   name: string;

@@ -43,6 +43,10 @@ import {MatChipsModule} from '@angular/material/chips';
 import {CardHistoryService} from './components/card-history.service';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogRemoveComponent } from './components/dialog-remove-component/dialog-remove.component';
+import { DialogAddComponent } from './components/dialog-add/dialog-add.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -60,7 +64,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     ListComponent,
     BindwidthDirective,
     OutputComponent,
-    CardComponent
+    CardComponent,
+    DialogRemoveComponent,
+    DialogAddComponent
   ],
   imports: [
     NgxChartsModule,
@@ -68,10 +74,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatPaginatorModule,
     MatSlideToggleModule,
     BrowserModule,
+    MatDialogModule,
     BrowserAnimationsModule,
     MatChipsModule,
     MatSelectModule,
     MatGridListModule,
+    MatCheckboxModule,
     MatRadioModule,
     MatInputModule,
     FlexLayoutModule,

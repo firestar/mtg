@@ -1,0 +1,15 @@
+<div class="content" fxLayout='column'>
+  <div fxFlex="">
+    {{card.name}} {{card.count}}
+  </div>
+  <div fxFlex="" fxLayout='row'>
+    <div fxFlex="50%" style="text-align: center;">
+      <h3 *ngIf="card.count">Regular Card ( {{card.count}} )</h3>
+      <button *ngIf="card.count" (click)="remove()" mat-raised-button color="warn"><mat-icon>remove</mat-icon> Remove</button>
+    </div>
+    <div fxFlex="50%" style="text-align: center;">
+      <h3 *ngIf="card.foil_count">Foil Card ( {{card.foil_count}} )</h3>
+      <button *ngIf="card.foil_count" (click)="removeFoil()" mat-raised-button color="warn"><mat-icon>remove</mat-icon> Remove</button>
+    </div>
+  </div>
+</div>

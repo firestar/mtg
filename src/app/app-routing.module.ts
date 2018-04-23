@@ -6,39 +6,50 @@ import { Routes, RouterModule } from '@angular/router';
 import {ListComponent} from './components/list/list.component';
 import {OutputComponent} from './components/output/output.component';
 import {CardComponent} from './components/card/card.component';
+import {DialogRemoveComponent} from './components/dialog-remove-component/dialog-remove.component';
+import {DialogAddComponent} from './components/dialog-add/dialog-add.component';
 
 const routes: Routes = [
-    {
+  {
+    path: '',
+    component: HomeComponent,
+    children: [
+      {
         path: '',
-        component: HomeComponent,
+        component: DashboardComponent
+      },
+      {
+        path: 'add',
+        component: AddComponent
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: 'list',
+        component: ListComponent,
         children: [
-            {
-                path: '',
-                component: DashboardComponent
-            },
-            {
-                path: 'add',
-                component: AddComponent
-            },
-            {
-                path: 'dashboard',
-                component: DashboardComponent
-            },
-            {
-                path: 'list',
-                component: ListComponent
-            },
-            {
-                path: 'output',
-                component: OutputComponent
-            }
-          ,
           {
-            path: 'card/:set/:card',
-            component: CardComponent
+            path: 'dialog-remove',
+            component: DialogRemoveComponent
+          },
+          {
+            path: 'dialog-add',
+            component: DialogAddComponent
           }
         ]
-    }
+      },
+      {
+        path: 'output',
+        component: OutputComponent
+      },
+      {
+        path: 'card/:set/:card',
+        component: CardComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({

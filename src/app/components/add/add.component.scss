@@ -1,5 +1,24 @@
 .add-container{
   height:100%;
+  .mat-table{
+    background: #212629 !important;
+    color:#fff;
+  }
+  .mat-header-cell{
+    color: #adadad !important;
+    font-weight: bold;
+    font-size:14px;
+  }
+  .mat-header-row{
+    border-bottom-color: #575757;
+  }
+  .mat-header-row{
+    border-bottom-color: #575757;
+  }
+  .mat-cell{
+    color: #e1e1e1 !important;
+    font-size:16px;
+  }
   .header{
     background: #404538;
     border-bottom: #636363 solid 1px;
