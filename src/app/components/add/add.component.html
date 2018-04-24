@@ -46,19 +46,19 @@
           <span style="text-align:center;display:inline-block;">
             <i class="ss ss-{{selectedSetId.toLowerCase()}} ss-{{selectedCard.rarity.toLowerCase()}} ss-4x"></i><br/>
             <p class="ss-{{selectedCard.rarity.toLowerCase()}}">{{selectedCard.rarity}}</p><br />
-            <i style="color:#fff;">$ {{selectedCard.usd}}</i>
+            <i style="color:#fff;">{{selectedCard.usd | currency}}</i>
           </span>
         </div>
       </div>
     </div>
   </div>
-  <div fxFlex="" style="margin-top:100px;" *ngIf="!selectedSetId">
+  <div fxFlex="shrink" style="margin-top:100px;" *ngIf="!selectedSet">
     <span
-      *ngFor="let set of setData"
+      *ngFor="let set of setData; let i = index"
       (click)="selectedSetId=set.code; checkSet($event)"
+      title="{{set.name}}"
       style="background:#3a3a3a;cursor:pointer;border-radius:4px;color:#cbcbcb;width:100px;display:inline-block;font-size:14px;margin:5px;padding:5px;text-align:center;">
-      <img style="width:45px;" src="{{set.icon_svg_uri}}"/><br/>
-      {{set.name}}
+      <i class="mtgicon" [ngStyle]="{ '-webkit-mask-image':url(set.icon_svg_uri)}"></i>
     </span>
   </div>
   <div fxFlex="" fxLayout='column'>

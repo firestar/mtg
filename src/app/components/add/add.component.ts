@@ -3,7 +3,6 @@ import {StoredCardsService} from '../stored-cards.service';
 import {CardIndexService} from '../card-index.service';
 import {EventEmitter} from '@angular/core';
 import {MatTableDataSource} from '@angular/material';
-import {Element} from '../dashboard/dashboard.component';
 
 @Component({
   selector: 'app-add',
@@ -15,13 +14,14 @@ export class AddComponent implements OnInit {
   selectedSetId = null;
   selectedSet = null;
   added = 0;
+  setDataList = null;
   setData = null;
   selectedCardId = null;
   selectedCard = null;
   backspaceCount = 0;
   enablePreview = false;
   addSourceTable: Element[]  = [];
-  addSource: Element[]  = [];
+  addSource: MatTableDataSource<Element>;
   displayedColumns = ['name', 'foil', 'remove'];
 
   public setFocusEmitter = new EventEmitter<boolean>();
@@ -32,17 +32,20 @@ export class AddComponent implements OnInit {
     this.setCounter++;
     const x = this.setCounter;
     const self = this;
+    this.filterSort();
     setTimeout(() => {
       if (self.setCounter === x) {
-          console.log(self.storedCards);
+        self.selectedSet = null;
+        if (self.selectedSetId !== '') {
           self.cardService.findSet(self.selectedSetId, set => {
-              self.selectedSet = set;
+            self.selectedSet = set;
           });
-          if (e.key === 'Enter') {
-              if (self.selectedSetId) {
-                  this.cardFocusEmitter.emit(true);
-              }
-          }
+        }
+        if (e.key === 'Enter') {
+            if (self.selectedSetId) {
+                this.cardFocusEmitter.emit(true);
+            }
+        }
       }
     }, 200);
   }
@@ -137,17 +140,38 @@ export class AddComponent implements OnInit {
   constructor(private cardService: CardIndexService, private storedCards: StoredCardsService) {
     this.addSource = new MatTableDataSource(this.addSourceTable.slice(0).reverse());
     this.cardService.findSets((sets) => {
-      this.setData = sets.data;
-      this.setData.sort( (a, b) => {
-        const aRelease = new Date(a.released_at);
-        const bRelease = new Date(b.released_at);
-        if (bRelease > aRelease) {
-          return 1;
-        } else if (bRelease < aRelease) {
-          return -1;
+      this.setDataList = sets.data;
+      this.filterSort();
+    });
+  }
+  url(url) {
+    return 'url(\'' + url + '\')';
+  }
+
+  filterSort() {
+    const self = this;
+    this.setData = this.setDataList.filter( set => {
+      let doesMatch = true;
+      if (self.selectedSetId) {
+        doesMatch = false;
+        if (set.code.startsWith(self.selectedSetId)) {
+          doesMatch = true;
         }
-        return 0;
-      });
+        if (set.name.toLowerCase().startsWith(self.selectedSetId.toLowerCase())) {
+          doesMatch = true;
+        }
+      }
+      return doesMatch;
+    });
+    this.setData.sort( (a, b) => {
+      const aRelease = new Date(a.released_at);
+      const bRelease = new Date(b.released_at);
+      if (bRelease > aRelease) {
+        return 1;
+      } else if (bRelease < aRelease) {
+        return -1;
+      }
+      return 0;
     });
   }
 

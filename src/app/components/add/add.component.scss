@@ -55,6 +55,15 @@
       font-size:12px;
     }
   }
+  .mtgicon{
+    background: rgb(255,255,255);
+    width:45px;
+    display:inline-block;
+    height:45px;
+    -webkit-mask-position: center, top left;
+    -webkit-mask-repeat: no-repeat, no-repeat;
+    -webkit-mask-size: cover;
+  }
   .content{
     padding:10px;
     height:100%;

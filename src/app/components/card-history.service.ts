@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Element} from './dashboard/dashboard.component';
 import {CardIndexService} from './card-index.service';
 import {StoredCardsService} from './stored-cards.service';
 

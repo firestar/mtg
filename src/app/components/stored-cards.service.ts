@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import {CardIndexService} from './card-index.service';
-const fs = require('fs');
 
 @Injectable()
 export class StoredCardsService {
@@ -11,15 +10,16 @@ export class StoredCardsService {
   selectedSet = '*';
   page = 0;
   constructor(private cardIndex: CardIndexService) {
-    fs.exists('backups/')
-    fs.mkdir('backups/');
-    fs.writeFile("/tmp/test", "Hey there!", function(err) {
-      if(err) {
-        return console.log(err);
+    /*fs.exists('backups/', (exists) => {
+      if (!exists) {
+        fs.mkdir('backups/', () => {
+          console.log('Created folder');
+        });
       }
-
-      console.log("The file was saved!");
-    });
+    });*/
+    setInterval(() => {
+      this.createBackup();
+    }, 1000 * 60 * 30);
     if (!this.cards) {
       const cards = localStorage.getItem('cards');
       if (cards) {
@@ -50,16 +50,25 @@ export class StoredCardsService {
             };
         }
     }
+    this.createBackup();
   }
 
+  public async createBackup() {
+    const date = new Date();
+    const dateString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + '_' + date.getMinutes();
+   /* fs.writeFile(
+      'backups/' + dateString + '_backup.txt',
+      JSON.stringify({cards: this.cards, totals: this.totals, prices: this.prices }),
+      function(err) {
+        if (err) {
+          return console.log(err);
+        }
+    });*/
+  }
   public save() {
     localStorage.setItem('cards', JSON.stringify(this.cards));
     localStorage.setItem('totals', JSON.stringify(this.totals));
     localStorage.setItem('prices', JSON.stringify(this.prices));
-  }
-
-  public getBySet(set) {
-    this.cards[set];
   }
 
   public flatList (beforeTime, limit) {
