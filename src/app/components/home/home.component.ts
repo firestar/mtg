@@ -47,20 +47,36 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.isMax = this.win.isMaximized();
     console.log('after', this.isMax);
   }
-  next (cards, startingId) {
+  next (cards, startingId, ignore = false) {
       if (cards.length <= startingId) {
         return;
       }
       const self = this;
       const card = cards[startingId];
-      if (!card.mtgo_id) {
+      if (!card.mtgo_id && !ignore) {
           this.cardService.findCard(card.set, card.card, (standard_data) => {
-            cards[startingId].mtgo_id = standard_data.mtgo_id;
+            card.mtgo_id = standard_data.mtgo_id;
+            if (!card.mtgo_id) {
+              if (!card.name) {
+                card.name = standard_data.name;
+              }
+              if (!card.type) {
+                card.type = standard_data.type_line;
+              }
+              if (!card.flavor_text) {
+                card.flavor_text = standard_data.flavor_text;
+              }
+              self.storedCards.setPrice(card.set, card.card, standard_data.usd);
+            }
+            card.lastCheck = new Date();
             self.storedCards.save();
-            self.next(cards, startingId);
+            self.next(cards, startingId, true);
           });
       } else {
         this.cardService.findCardMTGO(card.mtgo_id, (standard_data) => {
+          if (standard_data === null) {
+            return;
+          }
           if (!card.name) {
             card.name = standard_data.name;
           }

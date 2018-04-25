@@ -160,6 +160,9 @@ export class AddComponent implements OnInit {
         if (set.name.toLowerCase().indexOf(self.selectedSetId.toLowerCase()) !== -1) {
           doesMatch = true;
         }
+        if (set.released_at && set.released_at.toLowerCase().indexOf(self.selectedSetId.toLowerCase()) !== -1) {
+          doesMatch = true;
+        }
       }
       return doesMatch;
     });

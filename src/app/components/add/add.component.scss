@@ -57,12 +57,12 @@
   }
   .mtgIcon-svg{
     background: rgb(255,255,255);
-    width:45px;
+    width:70px;
     display:inline-block;
-    height:45px;
+    height:70px;
     -webkit-mask-position: center, top left;
     -webkit-mask-repeat: no-repeat, no-repeat;
-    -webkit-mask-size: cover;
+    -webkit-mask-size: auto;
   }
   .mtgIcon-content{
     background:#3a3a3a;

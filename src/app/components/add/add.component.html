@@ -56,7 +56,7 @@
     <span
       *ngFor="let set of setData; let i = index"
       (click)="selectedSetId = set.code; checkSet($event)"
-      matTooltip="{{set.name}}"
+      matTooltip="{{set.name}} - {{set.released_at}}"
       matTooltipPosition="above"
       class="mtgIcon-content">
       <i class="mtgIcon-svg" [ngStyle]="{ '-webkit-mask-image':url(set.icon_svg_uri)}"></i>

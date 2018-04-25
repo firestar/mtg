@@ -17,12 +17,16 @@ export class CardIndexService {
     }
   }
   setsCache = {};
-  cache = {};
+  cache = null;
 
   public async save() {
     localStorage.setItem('apiCache', JSON.stringify(this.cache));
   }
   public async findSet(set, func) {
+    if (set === null) {
+      func(null);
+      return;
+    }
     const self = this;
     const key = 'set_' + set;
     if (!self.cache[key]) {
@@ -40,7 +44,7 @@ export class CardIndexService {
     } else {
       const date = new Date();
       date.setDate(date.getDate() - 30 / 60 / 24);
-      if (self.cache[key].date < date) {
+      if (new Date(self.cache[key].date) < date) {
         delete self.cache[key];
         this.findSet(set, func);
       } else {
@@ -66,7 +70,7 @@ export class CardIndexService {
     } else {
       const date = new Date();
       date.setDate(date.getDate() - 5);
-      if (self.cache[key].date < date) {
+      if (new Date(self.cache[key].date) < date) {
         delete self.cache[key];
         this.findSets(func);
       } else {
@@ -75,8 +79,14 @@ export class CardIndexService {
     }
   }
   public async findCard(set, id, func) {
+    if (set === null || id === null) {
+      func(null);
+      return;
+    }
     const self = this;
     const key = 'card_' + set + '_' + id;
+    console.log(key);
+    console.log(self.cache[key]);
     if (!self.cache[key]) {
       this.getScryFall(set, id).subscribe(data => {
         setTimeout(() => {
@@ -92,15 +102,21 @@ export class CardIndexService {
     } else {
       const date = new Date();
       date.setDate(date.getDate() - 30 / 60 / 24);
-      if (self.cache[key].date < date) {
+      if (new Date(self.cache[key].date) < date) {
         delete self.cache[key];
-        this.findCard(set, id, func);
+        if (!self.cache[key]) {
+          this.findCard(set, id, func);
+        }
       } else {
         func(self.cache[key].data);
       }
     }
   }
   public async findCardMTGO(id, func) {
+    if (id === null) {
+      func(null);
+      return;
+    }
     const self = this;
     const key = 'mtgo_' + id;
     if (!self.cache[key]) {
@@ -118,7 +134,7 @@ export class CardIndexService {
     } else {
       const date = new Date();
       date.setDate(date.getDate() - 30 / 60 / 24);
-      if (self.cache[key].date < date) {
+      if (new Date(self.cache[key].date) < date) {
         delete self.cache[key];
         this.findCardMTGO(id, func);
       } else {
