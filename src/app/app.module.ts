@@ -47,6 +47,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { DialogRemoveComponent } from './components/dialog-remove-component/dialog-remove.component';
 import { DialogAddComponent } from './components/dialog-add/dialog-add.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -78,6 +79,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserAnimationsModule,
     MatChipsModule,
     MatSelectModule,
+    MatTooltipModule,
     MatGridListModule,
     MatCheckboxModule,
     MatRadioModule,

@@ -154,10 +154,10 @@ export class AddComponent implements OnInit {
       let doesMatch = true;
       if (self.selectedSetId) {
         doesMatch = false;
-        if (set.code.startsWith(self.selectedSetId)) {
+        if (set.code.indexOf(self.selectedSetId) !== -1) {
           doesMatch = true;
         }
-        if (set.name.toLowerCase().startsWith(self.selectedSetId.toLowerCase())) {
+        if (set.name.toLowerCase().indexOf(self.selectedSetId.toLowerCase()) !== -1) {
           doesMatch = true;
         }
       }

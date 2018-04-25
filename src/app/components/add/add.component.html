@@ -55,10 +55,11 @@
   <div fxFlex="shrink" style="margin-top:100px;" *ngIf="!selectedSet">
     <span
       *ngFor="let set of setData; let i = index"
-      (click)="selectedSetId=set.code; checkSet($event)"
-      title="{{set.name}}"
-      style="background:#3a3a3a;cursor:pointer;border-radius:4px;color:#cbcbcb;width:100px;display:inline-block;font-size:14px;margin:5px;padding:5px;text-align:center;">
-      <i class="mtgicon" [ngStyle]="{ '-webkit-mask-image':url(set.icon_svg_uri)}"></i>
+      (click)="selectedSetId = set.code; checkSet($event)"
+      matTooltip="{{set.name}}"
+      matTooltipPosition="above"
+      class="mtgIcon-content">
+      <i class="mtgIcon-svg" [ngStyle]="{ '-webkit-mask-image':url(set.icon_svg_uri)}"></i>
     </span>
   </div>
   <div fxFlex="" fxLayout='column'>

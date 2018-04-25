@@ -55,7 +55,7 @@
       font-size:12px;
     }
   }
-  .mtgicon{
+  .mtgIcon-svg{
     background: rgb(255,255,255);
     width:45px;
     display:inline-block;
@@ -63,6 +63,18 @@
     -webkit-mask-position: center, top left;
     -webkit-mask-repeat: no-repeat, no-repeat;
     -webkit-mask-size: cover;
+  }
+  .mtgIcon-content{
+    background:#3a3a3a;
+    cursor:pointer;
+    border-radius:4px;
+    color:#cbcbcb;
+    width:100px;
+    display:inline-block;
+    font-size:14px;
+    margin:5px;
+    padding:5px;
+    text-align:center;
   }
   .content{
     padding:10px;
