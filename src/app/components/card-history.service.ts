@@ -78,23 +78,32 @@ export class CardHistoryService {
         self.cards = Object.keys(self.storedCards.cards[set]);
         self.cards.forEach(card => {
           const count = self.storedCards.cards[set][card].count;
-          const val = count * parseFloat(self.storedCards.prices.current[set][card]);
+          let val = 0;
+          if (self.storedCards.prices.current[set][card]) {
+            val = count * parseFloat(self.storedCards.prices.current[set][card]);
+          }
           let history = self.storedCards.prices.history[set][card];
-          for (let i = 9; i >= 0; i--) {
-            try {
-              const e = history[history.length - i - 1];
-              const date = new Date(e[1]);
-              const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-              const index = self.days.indexOf(dayString);
-              if (!obj[index + '_' + card]) {
-                historyTmp.series[index].value += count * parseFloat(e[0]);
-                totals[index] += count * parseFloat(e[0]);
-                if (index !== totalIndex && totals[totalIndex] < totals[index]) {
-                  totalIndex = index;
+          if (history) {
+            for (let i = 9; i >= 0; i--) {
+              try {
+                const e = history[history.length - i - 1];
+                const date = new Date(e[1]);
+                const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                const index = self.days.indexOf(dayString);
+                if (!obj[index + '_' + card]) {
+                  let g = 0;
+                  if (e[0]) {
+                    g = parseFloat(e[0]);
+                  }
+                  historyTmp.series[index].value += count * g;
+                  totals[index] += count * parseFloat(e[0]);
+                  if (index !== totalIndex && totals[totalIndex] < totals[index]) {
+                    totalIndex = index;
+                  }
+                  obj[index + '_' + card] = true;
                 }
-                obj[index + '_' + card] = true;
+              } catch (ex) {
               }
-            } catch (ex) {
             }
           }
           self.value += val;
@@ -102,50 +111,70 @@ export class CardHistoryService {
           if (self.storedCards.cards[set][card].foil_count) {
             if (self.storedCards.prices.current[set + '_foil'] && self.storedCards.prices.current[set + '_foil'][card]) {
               const foil_count = self.storedCards.cards[set][card].foil_count;
-              const val_foil = foil_count * parseFloat(self.storedCards.prices.current[set + '_foil'][card]);
+              let val_foil = 0;
+              if (self.storedCards.prices.current[set + '_foil'][card]) {
+                val_foil = foil_count * parseFloat(self.storedCards.prices.current[set + '_foil'][card]);
+              }
               history = self.storedCards.prices.history[set + '_foil'][card];
-              for (let i = 9; i >= 0; i--) {
-                try {
-                  const e = history[history.length - i - 1];
-                  const date = new Date(e[1]);
-                  const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-                  const index = self.days.indexOf(dayString);
-                  if (!obj[index + '_foil_' + card]) {
-                    historyTmp.series[index].value += foil_count * parseFloat(e[0]);
-                    totals[index] += foil_count * parseFloat(e[0]);
-                    if (index !== totalIndex && totals[totalIndex] < totals[index]) {
-                      totalIndex = index;
+              if (history) {
+                for (let i = 9; i >= 0; i--) {
+                  try {
+                    const e = history[history.length - i - 1];
+                    const date = new Date(e[1]);
+                    const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                    const index = self.days.indexOf(dayString);
+                    if (!obj[index + '_foil_' + card]) {
+                      let g = 0;
+                      if (e[0]) {
+                        g = parseFloat(e[0]);
+                      }
+                      historyTmp.series[index].value += foil_count * g;
+                      totals[index] += foil_count * parseFloat(e[0]);
+                      if (index !== totalIndex && totals[totalIndex] < totals[index]) {
+                        totalIndex = index;
+                      }
+                      obj[index + '_foil_' + card] = true;
                     }
-                    obj[index + '_foil_' + card] = true;
+                  } catch (ex) {
                   }
-                } catch (ex) {
                 }
               }
               self.value += val_foil;
               tmp.value += val_foil;
             } else {
-              const foil_count = self.storedCards.cards[set][card].foil_count;
-              const val_foil = foil_count * parseFloat(self.storedCards.prices.current[set][card]);
-              history = self.storedCards.prices.history[set][card];
-              for (let i = 9; i >= 0; i--) {
-                try {
-                  const e = history[history.length - i - 1];
-                  const date = new Date(e[1]);
-                  const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
-                  const index = self.days.indexOf(dayString);
-                  if (!obj[index + '_' + card]) {
-                    historyTmp.series[index].value += foil_count * parseFloat(e[0]);
-                    totals[index] += foil_count * parseFloat(e[0]);
-                    if (index !== totalIndex && totals[totalIndex] < totals[index]) {
-                      totalIndex = index;
-                    }
-                    obj[index + '_' + card] = true;
-                  }
-                } catch (ex) {
+              if (self.storedCards.cards[set]) {
+                const foil_count = self.storedCards.cards[set][card].foil_count;
+                let val_foil = 0;
+                if (self.storedCards.prices.current[set][card]) {
+                  val_foil = foil_count * parseFloat(self.storedCards.prices.current[set][card]);
                 }
+                history = self.storedCards.prices.history[set][card];
+                if (history) {
+                  for (let i = 9; i >= 0; i--) {
+                    try {
+                      const e = history[history.length - i - 1];
+                      const date = new Date(e[1]);
+                      const dayString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+                      const index = self.days.indexOf(dayString);
+                      if (!obj[index + '_' + card]) {
+                        let g = 0;
+                        if (e[0]) {
+                          g = parseFloat(e[0]);
+                        }
+                        historyTmp.series[index].value += foil_count * g;
+                        totals[index] += foil_count * parseFloat(e[0]);
+                        if (index !== totalIndex && totals[totalIndex] < totals[index]) {
+                          totalIndex = index;
+                        }
+                        obj[index + '_' + card] = true;
+                      }
+                    } catch (ex) {
+                    }
+                  }
+                }
+                self.value += val_foil;
+                tmp.value += val_foil;
               }
-              self.value += val_foil;
-              tmp.value += val_foil;
             }
           }
         });
