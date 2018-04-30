@@ -1,0 +1,49 @@
+<div fxLayout='column' class="account-container">
+  <div fxFlex="62px" fxLayout='row' class="header">
+    <div fxFlex="" class="set-header">
+      <h1>Account</h1>
+      <h2>Cloud storage of cards</h2>
+    </div>
+  </div>
+  <div fxFlex="" fxLayout='column' class="content">
+    <div fxFlex="100px" fxLayout='row'>
+      <div fxFlex="5%"></div>
+      <div fxFlex="35%">
+        <h3 style="text-align: right;padding-right:20px;">Username</h3>
+      </div>
+      <div fxFlex="45%">
+        <mat-form-field class="full-width">
+          <input matInput autofocus type="text" [(ngModel)]="httpService.account.username"/>
+        </mat-form-field>
+      </div>
+      <div fxFlex="15%"></div>
+    </div>
+    <div fxFlex="100px" fxLayout='row'>
+      <div fxFlex="5%"></div>
+      <div fxFlex="35%">
+        <h3 style="text-align: right;padding-right:20px;">Password</h3>
+      </div>
+      <div fxFlex="45%">
+        <mat-form-field class="full-width">
+          <input matInput autofocus type="password" [(ngModel)]="httpService.account.password"/>
+        </mat-form-field>
+      </div>
+      <div fxFlex="15%"></div>
+    </div>
+    <div fxFlex="60px" fxLayout='column' *ngIf="!httpService.session">
+      <div fxFlex="5%"></div>
+      <div fxFlex="80%" style="text-align: center;">
+        <button mat-raised-button color="accent" (click)="httpService.login()">Login</button>
+      </div>
+      <div fxFlex="15%"></div>
+    </div>
+    <div fxFlex="60px" fxLayout='column' *ngIf="httpService.session">
+      <div fxFlex="5%"></div>
+      <div fxFlex="80%" style="text-align: center;">
+        <button mat-raised-button color="warn" (click)="httpService.logout()">Logout</button>
+      </div>
+      <div fxFlex="15%"></div>
+    </div>
+    <div fxFlex=""></div>
+  </div>
+</div>

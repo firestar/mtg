@@ -1,0 +1,82 @@
+.account-container{
+  height:100%;
+  .mat-table{
+    background: #212629 !important;
+    color:#fff;
+  }
+  .mat-header-cell{
+    color: #adadad !important;
+    font-weight: bold;
+    font-size:14px;
+  }
+  .mat-header-row{
+    border-bottom-color: #575757;
+  }
+  .mat-header-row{
+    border-bottom-color: #575757;
+  }
+  .mat-cell{
+    color: #e1e1e1 !important;
+    font-size:16px;
+  }
+  .header{
+    background: #404538;
+    border-bottom: #636363 solid 1px;
+    .set-header{
+      border-bottom: #000000 solid 1px;
+    }
+    h3{
+      padding:0px;
+      margin:0px;
+      color: #7d7d7d;
+      font-size:30px;
+      text-align:right;
+      padding-right:10px;
+      padding-top:10px;
+    }
+    .added-counter{
+      border-bottom: #000000 solid 1px;
+    }
+    h1{
+      padding:10px;
+      padding-bottom:5px;
+      color: #ecffff;
+      letter-spacing: 3px;
+      margin:0px;
+      font-size:20px;
+    }
+    h2{
+      margin:0px;
+      padding:10px;
+      padding-left:15px;
+      letter-spacing: 1px;
+      color: #d7fdff;
+      padding-top:0px;
+      font-size:12px;
+    }
+  }
+  .content{
+    .full-width{
+      width:100%;
+    }
+    padding:50px;
+    .mtg-icon{
+      text-align:right;
+    }
+    h3{
+      margin:0px;
+      margin-top:12px;
+      padding:10px;
+      letter-spacing: 1px;
+      color: #fbffcd;
+      padding-top:0px;
+      font-size:18px;
+    }
+    input{
+      color:#fff;
+      font-size:18px;
+      text-align: center;
+      width:100%;
+    }
+  }
+}

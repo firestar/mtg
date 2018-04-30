@@ -48,6 +48,8 @@ import { DialogRemoveComponent } from './components/dialog-remove-component/dial
 import { DialogAddComponent } from './components/dialog-add/dialog-add.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { AccountComponent } from './components/account/account.component';
+import {HttpService} from './components/http.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -67,7 +69,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     OutputComponent,
     CardComponent,
     DialogRemoveComponent,
-    DialogAddComponent
+    DialogAddComponent,
+    AccountComponent
   ],
   imports: [
     NgxChartsModule,
@@ -100,7 +103,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       }
     })
   ],
-  providers: [ElectronService, CardIndexService, StoredCardsService, CardHistoryService],
+  providers: [ElectronService, CardIndexService, StoredCardsService, CardHistoryService, HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

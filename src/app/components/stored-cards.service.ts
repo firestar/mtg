@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {CardIndexService} from './card-index.service';
+import {HttpService} from './http.service';
 
 @Injectable()
 export class StoredCardsService {
@@ -9,17 +10,10 @@ export class StoredCardsService {
   sortBy = 'Set';
   selectedSet = '*';
   page = 0;
-  constructor(private cardIndex: CardIndexService) {
-    /*fs.exists('backups/', (exists) => {
-      if (!exists) {
-        fs.mkdir('backups/', () => {
-          console.log('Created folder');
-        });
-      }
-    });*/
+  constructor(private cardIndex: CardIndexService, private httpService: HttpService) {
     setInterval(() => {
       this.createBackup();
-    }, 1000 * 60 * 30);
+    }, 1000 * 60 * 5);
     if (!this.cards) {
       const cards = localStorage.getItem('cards');
       if (cards) {
@@ -54,16 +48,7 @@ export class StoredCardsService {
   }
 
   public async createBackup() {
-    const date = new Date();
-    const dateString = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + '_' + date.getHours() + '_' + date.getMinutes();
-   /* fs.writeFile(
-      'backups/' + dateString + '_backup.txt',
-      JSON.stringify({cards: this.cards, totals: this.totals, prices: this.prices }),
-      function(err) {
-        if (err) {
-          return console.log(err);
-        }
-    });*/
+    // send to url
   }
   public save() {
     localStorage.setItem('cards', JSON.stringify(this.cards));

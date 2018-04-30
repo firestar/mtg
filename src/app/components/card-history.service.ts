@@ -79,6 +79,7 @@ export class CardHistoryService {
         self.cards.forEach(card => {
           const count = self.storedCards.cards[set][card].count;
           let val = 0;
+
           if (self.storedCards.prices.current[set][card]) {
             val = count * parseFloat(self.storedCards.prices.current[set][card]);
           }

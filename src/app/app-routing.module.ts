@@ -8,6 +8,7 @@ import {OutputComponent} from './components/output/output.component';
 import {CardComponent} from './components/card/card.component';
 import {DialogRemoveComponent} from './components/dialog-remove-component/dialog-remove.component';
 import {DialogAddComponent} from './components/dialog-add/dialog-add.component';
+import {AccountComponent} from './components/account/account.component';
 
 const routes: Routes = [
   {
@@ -41,8 +42,8 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'output',
-        component: OutputComponent
+        path: 'account',
+        component: AccountComponent
       },
       {
         path: 'card/:set/:card',
