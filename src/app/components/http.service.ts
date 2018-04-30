@@ -43,8 +43,8 @@ export class HttpService {
       })
     };
     this.http.post('http://' + this.serviceURL + '/authentication/login', {}, httpOptions).subscribe(data => {
-      if (data.status === 'success') {
-        this.session = data.session;
+      if (data && data['status'] === 'success') {
+        this.session = data['session'];
       }
     }, error => {
       console.log(error);
@@ -59,7 +59,7 @@ export class HttpService {
       })
     };
     this.http.post('http://' + this.serviceURL + '/auth/logout', {}, httpOptions).subscribe(data => {
-      if (data.status === 'success') {
+      if (data && data['status'] === 'success') {
         this.session = null;
       }
     }, error => {
@@ -74,7 +74,7 @@ export class HttpService {
       })
     };
     this.http.post('http://' + this.serviceURL + '/auth/loggedin', {}, httpOptions).subscribe(data => {
-      if (data.status === 'success') {
+      if (data && data['status'] === 'success') {
         console.log('still logged in');
       } else {
         this.session = null;
