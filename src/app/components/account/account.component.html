@@ -6,7 +6,7 @@
     </div>
   </div>
   <div fxFlex="" fxLayout='column' class="content">
-    <div fxFlex="100px" fxLayout='row'>
+    <div fxFlex="100px" fxLayout='row' *ngIf="!httpService.session">
       <div fxFlex="5%"></div>
       <div fxFlex="35%">
         <h3 style="text-align: right;padding-right:20px;">Username</h3>
@@ -18,7 +18,7 @@
       </div>
       <div fxFlex="15%"></div>
     </div>
-    <div fxFlex="100px" fxLayout='row'>
+    <div fxFlex="100px" fxLayout='row' *ngIf="!httpService.session">
       <div fxFlex="5%"></div>
       <div fxFlex="35%">
         <h3 style="text-align: right;padding-right:20px;">Password</h3>
@@ -30,12 +30,16 @@
       </div>
       <div fxFlex="15%"></div>
     </div>
-    <div fxFlex="60px" fxLayout='column' *ngIf="!httpService.session">
+    <div fxFlex="60px" fxLayout='row' *ngIf="!httpService.session">
       <div fxFlex="5%"></div>
-      <div fxFlex="80%" style="text-align: center;">
+      <div fxFlex="35%" style="text-align: right;">
         <button mat-raised-button color="accent" (click)="httpService.login()">Login</button>
       </div>
-      <div fxFlex="15%"></div>
+      <div fxFlex="5%"></div>
+      <div fxFlex="35%" style="text-align: left;">
+         <button mat-raised-button color="primary" (click)="httpService.register()">Register</button>
+      </div>
+      <div fxFlex="20%"></div>
     </div>
     <div fxFlex="60px" fxLayout='column' *ngIf="httpService.session">
       <div fxFlex="5%"></div>

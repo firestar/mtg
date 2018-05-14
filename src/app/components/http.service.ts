@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class HttpService {
-  serviceURL = 'localhost:3000';
+  static singleton;
+  serviceURL = 'mtg.synload.com';
   account = {
     username: '',
     password: ''
@@ -16,7 +17,9 @@ export class HttpService {
     if (accountString) {
       this.account = JSON.parse(accountString);
       this.login();
-      setInterval(() => {
+    }
+    HttpService.singleton = setInterval(() => {
+      if (this.account) {
         if (this.session) {
           this.checkLogin();
         } else if (!this.forceLogged) {
@@ -25,12 +28,44 @@ export class HttpService {
         } else {
           console.log('force logged out, not re-logging in');
         }
-      }, 5000);
-    }
+      }
+    }, 5000);
   }
 
   save() {
     localStorage.setItem('account', JSON.stringify(this.account));
+  }
+
+  getCardList(func) {
+    this.forceLogged = false;
+    this.save();
+    const httpOptions = {
+      headers: new HttpHeaders( {
+        'Content-Type':  'application/json',
+        'session': this.session
+      })
+    };
+    this.http.post('https://' + this.serviceURL + '/cards/list', {}, httpOptions).subscribe(data => {
+      func(data);
+    }, error => {
+      console.log(error);
+    });
+  }
+
+  saveCardList(cards, func) {
+    this.forceLogged = false;
+    this.save();
+    const httpOptions = {
+      headers: new HttpHeaders( {
+        'Content-Type':  'application/json',
+        'session': this.session
+      })
+    };
+    this.http.post('https://' + this.serviceURL + '/cards/save', JSON.stringify(cards), httpOptions).subscribe(data => {
+      func(data);
+    }, error => {
+      console.log(error);
+    });
   }
 
   login() {
@@ -42,7 +77,26 @@ export class HttpService {
         'Content-Type':  'application/json'
       })
     };
-    this.http.post('http://' + this.serviceURL + '/authentication/login', {}, httpOptions).subscribe(data => {
+    this.http.post('https://' + this.serviceURL + '/authentication/login', {}, httpOptions).subscribe(data => {
+      if (data && data['status'] === 'success') {
+        this.session = data['session'];
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+  register() {
+    this.forceLogged = false;
+    this.save();
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/json');
+    this.http
+      .post(
+        'https://' + this.serviceURL + '/authentication/register',
+        '{"username":"' + this.account.username + '", "password": "' + this.account.password + '"}',
+        { headers }
+      )
+      .subscribe(data => {
       if (data && data['status'] === 'success') {
         this.session = data['session'];
       }
@@ -58,7 +112,7 @@ export class HttpService {
         'session': this.session
       })
     };
-    this.http.post('http://' + this.serviceURL + '/auth/logout', {}, httpOptions).subscribe(data => {
+    this.http.post('https://' + this.serviceURL + '/auth/logout', {}, httpOptions).subscribe(data => {
       if (data && data['status'] === 'success') {
         this.session = null;
       }
@@ -73,7 +127,12 @@ export class HttpService {
         'session': this.session
       })
     };
-    this.http.post('http://' + this.serviceURL + '/auth/loggedin', {}, httpOptions).subscribe(data => {
+    this.http.post(
+      'https://' + this.serviceURL + '/auth/loggedin',
+      {},
+      httpOptions
+    )
+    .subscribe(data => {
       if (data && data['status'] === 'success') {
         console.log('still logged in');
       } else {

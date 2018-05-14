@@ -16,7 +16,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   win;
   screen;
   isMax;
-  constructor(private cardHistory: CardHistoryService, public _electronService: ElectronService, private http: HttpClient, private cardService: CardIndexService, private storedCards: StoredCardsService) {
+  constructor(
+    private cardHistory: CardHistoryService,
+    public _electronService: ElectronService,
+    private http: HttpClient, private cardService: CardIndexService,
+    private storedCards: StoredCardsService
+  ) {
     this.electronService = _electronService;
     this.win = this._electronService.remote.getCurrentWindow();
     this.screen =  this._electronService.screen.getPrimaryDisplay();
