@@ -1,23 +1,24 @@
-import {AfterViewInit, Component, Inject, OnChanges, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit, OnDestroy} from '@angular/core';
 import {StoredCardsService} from '../stored-cards.service';
 import {CardIndexService} from '../card-index.service';
-import {EventEmitter} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import {MatDialog} from '@angular/material';
 import {DialogRemoveComponent} from '../dialog-remove-component/dialog-remove.component';
 import {DialogAddComponent} from '../dialog-add/dialog-add.component';
 import {CardHistoryService} from '../card-history.service';
+import {HttpService} from '../http.service';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit, AfterViewInit  {
+export class ListComponent implements OnInit, OnDestroy, AfterViewInit  {
 
   constructor(
     private cardService: CardIndexService,
     private storedCards: StoredCardsService,
     public dialog: MatDialog,
+    private httpService: HttpService,
     private cardHistory: CardHistoryService) { }
 
 
@@ -33,7 +34,7 @@ export class ListComponent implements OnInit, AfterViewInit  {
   width = (wid) => {
     this.limit = Math.floor(wid / 220) * 3;
     this.pages = this.createRange(Math.ceil(this.cards.length / this.limit));
-  };
+  }
 
   setPage(p) {
     this.storedCards.page = p;
@@ -174,6 +175,11 @@ export class ListComponent implements OnInit, AfterViewInit  {
           if (!this.cardSets[set]) {
             this.cardSets[set] = [];
           }
+          if (self.storedCards.name !== '' && this.storedCards.cards[set][card].name) {
+            if (this.storedCards.cards[set][card].name.toLowerCase().indexOf(self.storedCards.name) === -1) {
+              return;
+            }
+          }
           this.storedCards.cards[set][card].set = set;
           this.storedCards.cards[set][card].card = card;
           const val = parseFloat(this.storedCards.cards[set][card].usd);
@@ -193,8 +199,14 @@ export class ListComponent implements OnInit, AfterViewInit  {
     this.sort();
     this.pages = this.createRange(Math.ceil(this.cards.length / this.limit));
   }
+  ngOnDestroy() {
+    this.httpService.events.cardList = () => {};
+  }
   ngOnInit() {
     this.recalculateList();
+    this.httpService.events.cardList = () => {
+      this.recalculateList();
+    };
   }
 
 }

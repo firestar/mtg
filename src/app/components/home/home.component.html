@@ -10,13 +10,13 @@
     </div>
     <div class="content" fxFlex="" fxLayout='row'>
         <div fxFlex="70px" class="menu">
-            <button routerLink="/dashboard" mat-mini-fab>
+            <button routerLink="/dashboard" *ngIf="httpService.session()" mat-mini-fab>
                 <mat-icon>dashboard</mat-icon>
             </button>
-            <button routerLink="/add" mat-mini-fab>
+            <button routerLink="/add" *ngIf="httpService.session()" mat-mini-fab>
                 <mat-icon>add</mat-icon>
             </button>
-            <button routerLink="/list" mat-mini-fab>
+            <button routerLink="/list" *ngIf="httpService.session()" mat-mini-fab>
                 <mat-icon>format_list_bulleted</mat-icon>
             </button>
             <button routerLink="/account" mat-mini-fab>

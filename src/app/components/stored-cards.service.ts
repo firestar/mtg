@@ -4,23 +4,29 @@ import {HttpService} from './http.service';
 
 @Injectable()
 export class StoredCardsService {
+  static saveRequest = [];
+  static saveRequestNum = 0;
+
   cards = null;
+  name = '';
   totals = null;
   prices = null;
   sortBy = 'Set';
   selectedSet = '*';
   page = 0;
+
   constructor(private cardIndex: CardIndexService, private httpService: HttpService) {
     setInterval(() => {
       this.createBackup();
     }, 1000 * 60 * 5);
     if (!this.cards) {
-      const cards = localStorage.getItem('cards');
+      /*const cards = localStorage.getItem('cards');
       if (cards) {
           this.cards = JSON.parse(cards);
       } else {
           this.cards = {};
-      }
+      }*/
+      this.cards = {};
     }
     if (!this.totals) {
       const totals = localStorage.getItem('totals');
@@ -51,7 +57,10 @@ export class StoredCardsService {
     // send to url
   }
   public save() {
-    localStorage.setItem('cards', JSON.stringify(this.cards));
+    //localStorage.setItem('cards', JSON.stringify(this.cards));
+    this.httpService.saveCardList(this.cards, (data) => {
+      console.log('saved');
+    });
     localStorage.setItem('totals', JSON.stringify(this.totals));
     localStorage.setItem('prices', JSON.stringify(this.prices));
   }

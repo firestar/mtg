@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {StoredCardsService} from '../stored-cards.service';
 import {CardIndexService} from '../card-index.service';
 import {CardHistoryService} from '../card-history.service';
+import {HttpService} from '../http.service';
 
 @Component({
   selector: 'app-home',
@@ -19,9 +20,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   constructor(
     private cardHistory: CardHistoryService,
     public _electronService: ElectronService,
-    private http: HttpClient, private cardService: CardIndexService,
+    private http: HttpClient,
+    private cardService: CardIndexService,
+    private httpService: HttpService,
     private storedCards: StoredCardsService
   ) {
+    this.httpService.init(storedCards);
     this.electronService = _electronService;
     this.win = this._electronService.remote.getCurrentWindow();
     this.screen =  this._electronService.screen.getPrimaryDisplay();
