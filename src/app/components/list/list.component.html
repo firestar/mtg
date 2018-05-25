@@ -45,7 +45,7 @@
           <div fxFlex="">
             <mat-icon (click)="add(card.card, card.set)">add</mat-icon>
           </div>
-          <div fxFlex="shrink">
+          <div fxFlex="shrink" style="height:63px;">
             {{card.count}}, {{card.foil_count}}<br/>
             <small  style="font-size:12px;">({{card.set}}, {{card.card}})</small><br/>
             <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) < 0" style="color:#b24140;font-size:13px;">{{cardHistory.directionTodayDaysAgoCache(card, 2) | currency}}</span>
@@ -60,7 +60,7 @@
           <div fxFlex="">
             <mat-icon (click)="add(card.card, card.set)">add</mat-icon>
           </div>
-          <div fxFlex="shrink">
+          <div fxFlex="shrink" style="height:63px;">
             {{card.count}}<br/>
             <small  style="font-size:12px;">({{card.set}}, {{card.card}})</small><br/>
             <span *ngIf="cardHistory.directionTodayDaysAgoCache(card, 2) < 0" style="color:#b24140;font-size:13px;">{{cardHistory.directionTodayDaysAgoCache(card, 2) | currency}}</span>

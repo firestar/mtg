@@ -253,6 +253,9 @@ export class CardHistoryService {
   }
   directionTodayDaysAgo(card, ago) {
     const self = this;
+    if (!self.storedCards.prices.history[card.set] || !self.storedCards.prices.history[card.set][card.card]) {
+      return;
+    }
     const history = self.storedCards.prices.history[card.set][card.card];
     let daysAgo = 0;
     let today = 0;
